@@ -3,6 +3,7 @@ import {Roboto} from "next/font/google";
 import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
+import Header from "@/components/header";
 
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
@@ -25,6 +26,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
+            <Header/>
             {children}
         </ThemeProvider>
         </body>
