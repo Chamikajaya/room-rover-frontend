@@ -4,6 +4,7 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Header from "@/components/header";
+import MobileNavbar from "@/components/mobile-navbar";
 
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
