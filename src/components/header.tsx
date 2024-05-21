@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "@/components/logo";
 import MobileNavbar from "@/components/mobile-navbar";
+import MainNavbar from "@/components/main-navbar";
 
 export default function Header() {
     return (
@@ -12,6 +13,9 @@ export default function Header() {
                 <div className={"md:hidden"}>
                     <MobileNavbar/>
                 </div>
+               <div className={"hidden md:block"}>
+                   <MainNavbar/>
+               </div>
             </div>
 
 
