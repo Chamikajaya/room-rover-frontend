@@ -9,8 +9,8 @@ import MobileNavbar from "@/components/mobile-navbar";
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
 export const metadata: Metadata = {
-    title: "BellyBites",
-    description: "Craving deliciousness? Belly Bites delivers the best bites from your favorite restaurants, straight to your door. Skip the cooking, explore a variety of cuisines, and satisfy your belly with just a few taps!",
+    title: "RoomRover",
+    description: "Explore, compare, and book hotels effortlessly with RoomRover. We bring you a wide range of options, ensuring you find the ideal stay at the best price. Start your journey with RoomRover today",
 };
 
 export default function RootLayout({
@@ -27,7 +27,6 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-            <Header/>
             {children}
         </ThemeProvider>
         </body>
