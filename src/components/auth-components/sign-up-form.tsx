@@ -14,12 +14,12 @@ import {
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-// import FormError from "@/components/FormError";
-// import FormSuccess from "@/components/FormSuccess";
 import {useState} from "react";
-// import axios from "axios";
-import toast from "react-hot-toast";  // ! do not remove this - onsubmit function uses it later
+import axios from "axios";
+import toast from "react-hot-toast";
 import {Lock, Mail, User} from "lucide-react";
+import FormError from "@/components/form-error";
+import FormSuccess from "@/components/form-success";
 
 
 export default function SignUpForm() {
@@ -38,34 +38,43 @@ export default function SignUpForm() {
         }
     })
 
-    // TODO: Implement onSubmit function
 
     const onSubmit = async (formData: SignUpSchema) => {
-        // try {
-        //     setIsSubmitting(true)
-        //     setFormErrMsg("")
-        //     setFormErrMsg("")
-        //     const response = await axios.post("/api/auth/sign-up", formData);
-        //
-        //     if (response.data.errorMessage) {
-        //         setFormErrMsg(response.data.errorMessage)
-        //     } else if (response.data.successMessage) {
-        //         setFormSuccessMsg(response.data.successMessage)
-        //     }
-        //
-        // } catch (e) {
-        //     console.error(e)
-        //     toast.error("Something went wrong")
-        // } finally {
-        //     setIsSubmitting(false)
-        // }
+
+        console.log(formData);
+        try {
+
+            setIsSubmitting(true)
+            setFormErrMsg("")
+            setFormSuccessMsg("")
+
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/register`,
+                formData
+            );
+
+            if (response.data.errorMessage) {
+                setFormErrMsg(response.data.errorMessage)
+            } else if (response.data.successMessage) {
+                setFormSuccessMsg(response.data.successMessage)
+                toast.success("Account created successfully")
+
+            }
+            console.log(response.data)
+
+        } catch (e) {
+            console.error(e)
+            toast.error("Something went wrong")
+        } finally {
+            setIsSubmitting(false)
+        }
 
 
     }
 
     return (
         <CardWrapper
-            title="Fist step in finding your dream stay 🏡"
+            title="First step in finding your dream stay 🏡"
             backBtnLabel="Already have an account ? "
             backBtnLink="/sign-in"
         >
@@ -89,7 +98,7 @@ export default function SignUpForm() {
                                             placeholder={"your email here"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage className={"text-red-400 font-normal"}/>
                                 </FormItem>
                             )}
                         />
@@ -106,10 +115,10 @@ export default function SignUpForm() {
                                         <Input
                                             {...field}
                                             type={"text"}
-                                            placeholder={"your username here"}
+                                            placeholder={"your first name here"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage className={"text-red-400 font-normal"}/>
                                 </FormItem>
                             )}
                         />
@@ -126,10 +135,10 @@ export default function SignUpForm() {
                                         <Input
                                             {...field}
                                             type={"text"}
-                                            placeholder={"your username here"}
+                                            placeholder={"your last name here"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage className={"text-red-400 font-normal"}/>
                                 </FormItem>
                             )}
                         />
@@ -149,7 +158,7 @@ export default function SignUpForm() {
                                             placeholder={"*****"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage className={"text-red-400 font-normal"}/>
                                 </FormItem>
                             )}
                         />
@@ -169,13 +178,13 @@ export default function SignUpForm() {
                                             placeholder={"*****"}
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage className={"text-red-400 font-normal"}/>
                                 </FormItem>
                             )}
                         />
                     </div>
-                    {/*<FormError errMessage={formErrMsg}/>*/}
-                    {/*<FormSuccess successMessage={formSuccessMsg}/>*/}
+                    <FormError errMessage={formErrMsg}/>
+                    <FormSuccess successMessage={formSuccessMsg}/>
                     <Button type="submit" className="w-full" size={"sm"} disabled={isSubmitting}>
                         Create an account
                     </Button>

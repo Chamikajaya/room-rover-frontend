@@ -6,6 +6,7 @@ import {ThemeProvider} from "@/components/theme-provider";
 import Header from "@/components/header";
 import MobileNavbar from "@/components/mobile-navbar";
 import ToasterProvider from "@/components/toast-provider";
+import Footer from "@/components/footer";
 
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
@@ -29,7 +30,14 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
         >
-            {children}
+            <div className="flex flex-col min-h-screen">
+                <main className={"flex-grow"}>
+                    <Header/>
+                    {children}
+                    <Footer/>
+                </main>
+
+            </div>
         </ThemeProvider>
         </body>
         </html>
