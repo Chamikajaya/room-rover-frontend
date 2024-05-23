@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function MainNavbar() {
     return (
-        <Link href={"/sign-in"}>
+        <Link href={"/register"}>
             <Button
                 className={"font-semibold hover:text-primary hover:bg-secondary"}
                 variant={"secondary"}

@@ -5,6 +5,7 @@ import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Header from "@/components/header";
 import MobileNavbar from "@/components/mobile-navbar";
+import ToasterProvider from "@/components/toast-provider";
 
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body>
+        <ToasterProvider/>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
