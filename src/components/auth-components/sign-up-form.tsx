@@ -48,6 +48,7 @@ export default function SignUpForm() {
 
     const onSubmit = async (formData: SignUpSchema) => {
 
+        // TODO: delete log later
         console.log(formData);
 
 
@@ -59,7 +60,10 @@ export default function SignUpForm() {
 
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/register`,
-                formData
+                formData,
+                {
+                    withCredentials: true
+                }
             );
 
             if (response.data.errorMessage) {
