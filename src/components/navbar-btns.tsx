@@ -4,6 +4,7 @@ import {useContext} from "react";
 import AuthContext from "../../context/auth-context";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
+import LogoutButton from "@/components/auth-components/logout-btn";
 
 export default function NavbarButtons() {
     // @ts-ignore
@@ -29,14 +30,7 @@ export default function NavbarButtons() {
                             Hotels
                         </Button>
                     </Link>
-                    <Link href={"/"}>
-                        <Button
-                            className={"font-semibold hover:text-primary hover:bg-secondary"}
-                            variant={"default"}
-                        >
-                            Sign Out
-                        </Button>
-                    </Link>
+                    <LogoutButton/>
                 </>
             ) : (
                 <>
@@ -49,13 +43,13 @@ export default function NavbarButtons() {
                         </Button>
                     </Link>
                     <Link href={"/login"}>
-                    <Button
-                        className={"font-semibold hover:text-primary hover:bg-secondary"}
-                        variant={"default"}
-                    >
-                        Login
-                    </Button>
-                </Link>
+                        <Button
+                            className={"font-semibold hover:text-primary hover:bg-secondary"}
+                            variant={"default"}
+                        >
+                            Login
+                        </Button>
+                    </Link>
                 </>
             )}
         </>
