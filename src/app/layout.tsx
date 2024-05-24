@@ -4,9 +4,9 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Header from "@/components/header";
-import MobileNavbar from "@/components/mobile-navbar";
 import ToasterProvider from "@/components/toast-provider";
 import Footer from "@/components/footer";
+import {AuthProvider} from "../../context/auth-context";
 
 const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
@@ -23,22 +23,24 @@ export default function RootLayout({
     return (
         <html lang="en">
         <body>
-        <ToasterProvider/>
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-        >
-            <div className="flex flex-col min-h-screen">
-                <main className={"flex-grow"}>
-                    <Header/>
-                    {children}
-                    <Footer/>
-                </main>
+        <AuthProvider>
+            <ToasterProvider/>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                <div className="flex flex-col min-h-screen">
+                    <main className={"flex-grow"}>
+                        <Header/>
+                        {children}
+                        <Footer/>
+                    </main>
 
-            </div>
-        </ThemeProvider>
+                </div>
+            </ThemeProvider>
+        </AuthProvider>
         </body>
         </html>
     );

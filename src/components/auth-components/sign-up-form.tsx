@@ -43,6 +43,7 @@ export default function SignUpForm() {
 
     const onSuccessfulSubmit = () => {
         router.push("/")
+        router.refresh();
     };
 
 
