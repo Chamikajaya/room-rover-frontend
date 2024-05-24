@@ -13,8 +13,8 @@ interface HeaderProps {
 export default function Header({label}: HeaderProps) {
     return (
         <div className="w-full flex flex-col gap-y-4 items-center">
-            <h1 className={cn("text-3xl font-semibold", montserrat.className)}>
-                Register 🔒
+            <h1 className={cn("text-2xl font-semibold", montserrat.className)}>
+                Authentication 🔒
             </h1>
             <p className="text-muted-foreground text-sm">
                 {label}

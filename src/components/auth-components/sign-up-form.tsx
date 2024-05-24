@@ -49,8 +49,7 @@ export default function SignUpForm() {
 
     const onSubmit = async (formData: SignUpSchema) => {
 
-        // TODO: delete log later
-        console.log(formData);
+        // console.log(formData);
 
 
         try {
@@ -91,7 +90,7 @@ export default function SignUpForm() {
         <CardWrapper
             title="First step in finding your dream stay 🏡"
             backBtnLabel="Already have an account ? "
-            backBtnLink="/sign-in"
+            backBtnLink="/login"
         >
             <Form {...form}>
                 <form

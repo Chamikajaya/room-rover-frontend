@@ -32,3 +32,20 @@ export const signUpSchema = z
     );
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;
+
+
+export const signInSchema = z
+    .object({
+        email: z
+            .string()
+            .email({
+                message: "You must provide a valid email",
+            })
+            .trim(),
+        password: z
+            .string()
+
+    })
+
+
+export type SignInSchema = z.infer<typeof signInSchema>;

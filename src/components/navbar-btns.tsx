@@ -6,6 +6,7 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
 export default function NavbarButtons() {
+    // @ts-ignore
     const {isAuthenticated} = useContext(AuthContext);
 
     return (
@@ -38,14 +39,24 @@ export default function NavbarButtons() {
                     </Link>
                 </>
             ) : (
-                <Link href={"/register"}>
+                <>
+                    <Link href={"/register"}>
+                        <Button
+                            className={"font-semibold hover:text-primary hover:bg-secondary"}
+                            variant={"secondary"}
+                        >
+                            Register
+                        </Button>
+                    </Link>
+                    <Link href={"/login"}>
                     <Button
                         className={"font-semibold hover:text-primary hover:bg-secondary"}
                         variant={"default"}
                     >
-                        Sign In
+                        Login
                     </Button>
                 </Link>
+                </>
             )}
         </>
     )
