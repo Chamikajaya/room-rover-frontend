@@ -20,9 +20,12 @@ import toast from "react-hot-toast";
 import {Lock, Mail, User} from "lucide-react";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
+import {useRouter} from "next/navigation";
 
 
 export default function SignUpForm() {
+
+    const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formErrMsg, setFormErrMsg] = useState("")
@@ -38,10 +41,16 @@ export default function SignUpForm() {
         }
     })
 
+    const onSuccessfulSubmit = () => {
+        router.push("/")
+    };
+
 
     const onSubmit = async (formData: SignUpSchema) => {
 
         console.log(formData);
+
+
         try {
 
             setIsSubmitting(true)
@@ -58,6 +67,7 @@ export default function SignUpForm() {
             } else if (response.data.successMessage) {
                 setFormSuccessMsg(response.data.successMessage)
                 toast.success("Account created successfully")
+                onSuccessfulSubmit();
 
             }
             console.log(response.data)
