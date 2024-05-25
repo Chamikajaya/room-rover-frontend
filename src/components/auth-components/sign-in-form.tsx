@@ -1,7 +1,7 @@
 "use client";
 
 import CardWrapper from "@/components/auth-components/card-wrapper";
-import {SignInSchema, signInSchema} from "@/schemas/validation";
+import {SignInSchema, signInSchema} from "@/schemas/authValidation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {
@@ -94,6 +94,7 @@ export default function SignInForm() {
             title="Welcome Back 😊"
             backBtnLabel="Don't have an account ? "
             backBtnLink="/register"
+            formTopic={"Login 🔒"}
         >
             <Form {...form}>
                 <form

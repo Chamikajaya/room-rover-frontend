@@ -14,6 +14,7 @@ import BackBtn from "@/components/auth-components/back-btn";
 interface CardWrapperProps {
     children: ReactNode;
     title: string;
+    formTopic: string;
     backBtnLabel: string;
     backBtnLink: string;
 }
@@ -22,6 +23,7 @@ export default function CardWrapper(
     {
         children,
         title,
+        formTopic,
         backBtnLabel,
         backBtnLink,
     }: CardWrapperProps) {
@@ -30,7 +32,7 @@ export default function CardWrapper(
         <Card className="w-[400px] shadow-lg shadow-primary">
             <CardHeader>
                 <CardTitle>
-                    <Header label={title}/>
+                    <Header label={title} formTopic={formTopic}/>
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">

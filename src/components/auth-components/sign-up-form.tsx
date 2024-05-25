@@ -1,7 +1,7 @@
 "use client";
 
 import CardWrapper from "@/components/auth-components/card-wrapper";
-import {SignUpSchema, signUpSchema} from "@/schemas/validation";
+import {SignUpSchema, signUpSchema} from "@/schemas/authValidation";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {
@@ -89,6 +89,7 @@ export default function SignUpForm() {
             title="First step in finding your dream stay 🏡"
             backBtnLabel="Already have an account ? "
             backBtnLink="/login"
+            formTopic={"Register 🔒"}
         >
             <Form {...form}>
                 <form
