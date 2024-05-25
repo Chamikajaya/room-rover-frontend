@@ -23,7 +23,6 @@ import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
 
 
-
 export default function SignInForm() {
 
     const router = useRouter();
@@ -42,8 +41,10 @@ export default function SignInForm() {
     })
 
     const onSuccessfulSubmit = () => {
+        console.log("Running onSuccessfulSubmit")
         router.push("/")
         router.refresh();
+
     };
 
 
@@ -66,12 +67,15 @@ export default function SignInForm() {
                 }
             );
 
-            if (response.data.errorMessage) {
+            console.log(response)
+
+            if (response.status !== 200) {
                 setFormErrMsg(response.data.errorMessage)
-            } else if (response.data.successMessage) {
+            } else {
                 setFormSuccessMsg(response.data.successMessage)
                 toast.success("Login is successful")
                 onSuccessfulSubmit();
+
 
             }
             console.log(response.data)
@@ -82,8 +86,6 @@ export default function SignInForm() {
         } finally {
             setIsSubmitting(false)
         }
-
-
     }
 
 
@@ -141,7 +143,7 @@ export default function SignInForm() {
                     <FormError errMessage={formErrMsg}/>
                     <FormSuccess successMessage={formSuccessMsg}/>
                     <Button type="submit" className="w-full" size={"sm"} disabled={isSubmitting}>
-                        Sign in
+                        Login
                     </Button>
 
                 </form>

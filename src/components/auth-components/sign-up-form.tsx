@@ -44,13 +44,11 @@ export default function SignUpForm() {
     const onSuccessfulSubmit = () => {
         router.push("/")
         router.refresh();
+
     };
 
 
     const onSubmit = async (formData: SignUpSchema) => {
-
-        // console.log(formData);
-
 
         try {
 
@@ -66,15 +64,15 @@ export default function SignUpForm() {
                 }
             );
 
-            if (response.data.errorMessage) {
-                setFormErrMsg(response.data.errorMessage)
-            } else if (response.data.successMessage) {
-                setFormSuccessMsg(response.data.successMessage)
-                toast.success("Account created successfully")
-                onSuccessfulSubmit();
+            console.log(response);
 
+            if (response.status === 201) {
+                toast.success("Account created successfully" ,{duration:300000})
+                onSuccessfulSubmit();
+            } else {
+                toast.error("Something went wrong");
             }
-            console.log(response.data)
+
 
         } catch (e) {
             console.error(e)

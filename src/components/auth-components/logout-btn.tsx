@@ -19,11 +19,12 @@ export default function LogoutButton() {
             if (response.status === 200) {
                 toast.success('Successfully signed out!');
                 router.push('/login');
+                router.refresh();
+
             }
         } catch (e) {
             console.error(e);
             toast.error('Failed to sign out. Please try again.');
-
         }
     };
 
