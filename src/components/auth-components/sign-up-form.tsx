@@ -42,8 +42,10 @@ export default function SignUpForm() {
     })
 
     const onSuccessfulSubmit = () => {
-        router.push("/")
-        router.refresh();
+        // router.push("/")
+        // router.refresh();
+
+        window.location.href = "/";
 
     };
 

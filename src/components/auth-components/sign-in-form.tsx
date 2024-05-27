@@ -41,9 +41,11 @@ export default function SignInForm() {
     })
 
     const onSuccessfulSubmit = () => {
-        console.log("Running onSuccessfulSubmit")
-        router.push("/")
-        router.refresh();
+
+        // router.push("/")
+        // router.refresh();
+
+        window.location.href = "/";
 
     };
 

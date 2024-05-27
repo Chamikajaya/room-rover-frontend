@@ -18,8 +18,7 @@ export default function LogoutButton() {
                 })
             if (response.status === 200) {
                 toast.success('Successfully signed out!');
-                router.push('/login');
-                router.refresh();
+                window.location.href = "/login";
 
             }
         } catch (e) {
