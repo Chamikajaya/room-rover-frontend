@@ -20,12 +20,12 @@ import FormSuccess from "@/components/form-success";
 import {useState} from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import {useRouter} from "next/navigation";
+// import {useRouter} from "next/navigation";
 
 
 export default function SignInForm() {
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formErrMsg, setFormErrMsg] = useState("")
@@ -74,17 +74,21 @@ export default function SignInForm() {
             if (response.status !== 200) {
                 setFormErrMsg(response.data.errorMessage)
             } else {
-                setFormSuccessMsg(response.data.successMessage)
-                toast.success("Login is successful")
+                setFormSuccessMsg(response.data.successMessage);
                 onSuccessfulSubmit();
 
 
             }
             console.log(response.data)
 
-        } catch (e) {
-            console.error(e)
-            toast.error("Something went wrong")
+        } catch (error) {
+            console.error(error)
+            // @ts-ignore
+            if (error.response.status === 400) {
+                toast.error("Invalid credentials.")
+            } else {
+                toast.error("Something went wrong")
+            }
         } finally {
             setIsSubmitting(false)
         }

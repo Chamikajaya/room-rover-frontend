@@ -1,13 +1,13 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
-import {useRouter} from "next/navigation";
+// import {useRouter} from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function LogoutButton() {
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const onLogout = async () => {
         try {
@@ -17,13 +17,13 @@ export default function LogoutButton() {
 
                 })
             if (response.status === 200) {
-                toast.success('Successfully signed out!');
                 window.location.href = "/login";
+                // toast.success('Successfully logged out!', {duration:4000});
 
             }
         } catch (e) {
             console.error(e);
-            toast.error('Failed to sign out. Please try again.');
+            toast.error('Failed to log out. Please try again.');
         }
     };
 

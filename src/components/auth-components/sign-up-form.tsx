@@ -20,12 +20,12 @@ import toast from "react-hot-toast";
 import {Lock, Mail, User} from "lucide-react";
 import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
-import {useRouter} from "next/navigation";
+// import {useRouter} from "next/navigation";
 
 
 export default function SignUpForm() {
 
-    const router = useRouter();
+    // const router = useRouter();
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [formErrMsg, setFormErrMsg] = useState("")
@@ -66,19 +66,24 @@ export default function SignUpForm() {
                 }
             );
 
-            console.log(response);
+            console.log("The response is " + response);
 
             if (response.status === 201) {
-                toast.success("Account created successfully" ,{duration:300000})
+                toast.success("Account created successfully", {duration: 300000})
                 onSuccessfulSubmit();
             } else {
                 toast.error("Something went wrong");
             }
 
 
-        } catch (e) {
-            console.error(e)
-            toast.error("Something went wrong")
+        } catch (error) {
+            console.error(error)
+            // @ts-ignore
+            if (error.response.status === 400) {
+                toast.error("Email already exists.")
+            } else {
+                toast.error("Something went wrong")
+            }
         } finally {
             setIsSubmitting(false)
         }
