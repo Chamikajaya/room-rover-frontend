@@ -41,13 +41,13 @@ export default function SignUpForm() {
         }
     })
 
-    const onSuccessfulSubmit = () => {
-        // router.push("/")
-        // router.refresh();
-
-        window.location.href = "/";
-
-    };
+    // const onSuccessfulSubmit = () => {
+    //     // router.push("/")
+    //     // router.refresh();
+    //
+    //     window.location.href = "/";
+    //
+    // };
 
 
     const onSubmit = async (formData: SignUpSchema) => {
@@ -69,8 +69,9 @@ export default function SignUpForm() {
             console.log("The response is " + response);
 
             if (response.status === 201) {
-                toast.success("Account created successfully", {duration: 300000})
-                onSuccessfulSubmit();
+                toast.success("Please confirm your email", {duration: 10000})
+                setFormSuccessMsg("A confirmation email has been sent to your email account.")
+                // onSuccessfulSubmit();
             } else {
                 toast.error("Something went wrong");
             }
