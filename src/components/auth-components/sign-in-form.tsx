@@ -19,7 +19,6 @@ import FormError from "@/components/form-error";
 import FormSuccess from "@/components/form-success";
 import {useState} from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 // import {useRouter} from "next/navigation";
 
 
@@ -85,9 +84,9 @@ export default function SignInForm() {
             console.error(error)
             // @ts-ignore
             if (error.response.status === 400) {
-                toast.error("Invalid credentials.")
+                setFormErrMsg("Invalid credentials.")
             } else {
-                toast.error("Something went wrong")
+                setFormErrMsg("Something went wrong")
             }
         } finally {
             setIsSubmitting(false)

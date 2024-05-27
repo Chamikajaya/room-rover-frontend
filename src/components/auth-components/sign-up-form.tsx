@@ -41,15 +41,6 @@ export default function SignUpForm() {
         }
     })
 
-    // const onSuccessfulSubmit = () => {
-    //     // router.push("/")
-    //     // router.refresh();
-    //
-    //     window.location.href = "/";
-    //
-    // };
-
-
     const onSubmit = async (formData: SignUpSchema) => {
 
         try {
@@ -66,24 +57,19 @@ export default function SignUpForm() {
                 }
             );
 
-            console.log("The response is " + response);
-
             if (response.status === 201) {
-                toast.success("Please confirm your email", {duration: 10000})
+                toast.success("Please confirm your email", {duration: 10000});
                 setFormSuccessMsg("A confirmation email has been sent to your email account.")
-                // onSuccessfulSubmit();
-            } else {
-                toast.error("Something went wrong");
             }
-
-
         } catch (error) {
             console.error(error)
             // @ts-ignore
             if (error.response.status === 400) {
                 toast.error("Email already exists.")
+                setFormErrMsg("Email already exists.")
             } else {
                 toast.error("Something went wrong")
+                setFormErrMsg("Something went wrong");
             }
         } finally {
             setIsSubmitting(false)

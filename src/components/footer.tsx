@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
     return (
-        <div className={"bg-secondary py-10"}>
+        <div className={"bg-secondary py-10 my-12"}>
             <div className="container mx-auto flex justify-center items-center flex-col gap-3">
                 <Link href={"/"}>
                     <Logo/>
