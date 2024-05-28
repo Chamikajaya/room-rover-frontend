@@ -49,7 +49,11 @@ export default function VerificationForm() {
 
         try {
             console.log("Inside try block")
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/verify-email`, {token});
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/verify-email`,
+                {token},
+                {withCredentials:true}
+            );
 
             console.log(response)
 
