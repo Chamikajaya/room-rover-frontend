@@ -12,8 +12,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {Separator} from "@/components/ui/separator";
 
 export default function MainDetailsSection() {
+
+    // ! May be coz I haven t add register to each form field ???
 
     const {register, control} = useFormContext();
 
@@ -156,6 +159,8 @@ export default function MainDetailsSection() {
                     </FormItem>
                 )}
             />
+
+            <Separator className={"bg-primary"}/>
 
 
         </div>

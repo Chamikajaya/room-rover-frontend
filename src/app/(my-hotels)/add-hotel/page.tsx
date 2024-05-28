@@ -1,3 +1,5 @@
+"use client";
+
 
 import AddHotelForm from "@/components/add-hotel-form-components/add-hotel-form";
 
