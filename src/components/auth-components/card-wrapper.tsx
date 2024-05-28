@@ -15,8 +15,8 @@ interface CardWrapperProps {
     children: ReactNode;
     title: string;
     formTopic: string;
-    backBtnLabel: string;
-    backBtnLink: string;
+    backBtnLabel?: string;
+    backBtnLink?: string;
 }
 
 export default function CardWrapper(
@@ -39,7 +39,10 @@ export default function CardWrapper(
                 {children}
             </CardContent>
             <CardFooter>
-                <BackBtn backBtnLabel={backBtnLabel} backBtnLink={backBtnLink}/>
+                {backBtnLabel && backBtnLink && (
+                    <BackBtn backBtnLabel={backBtnLabel} backBtnLink={backBtnLink}/>
+                )}
+
             </CardFooter>
         </Card>
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { hotelType } from "@/constants/hotelType";
-import { useFormContext } from "react-hook-form";
+import {hotelType} from "@/constants/hotelType";
+import {useFormContext} from "react-hook-form";
 import {
     FormControl,
     FormField,
@@ -9,11 +9,11 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Castle } from "lucide-react";
+import {Castle} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 
 export default function HotelTypeSection() {
-    const { control, watch, register } = useFormContext();
+    const {control, watch, register} = useFormContext();
     const typeWatch = watch("hotelType");
 
     return (
@@ -34,14 +34,16 @@ export default function HotelTypeSection() {
                                         <label
                                             key={idx}
                                             className={`cursor-pointer text-center text-sm rounded-full px-4 py-2  flex items-center justify-center ${typeWatch === type
-                                                ? "bg-purple-400 text-white font-semibold"
+                                                ? "bg-purple-500 text-white font-semibold"
                                                 : "bg-primary-foreground text-black"}`}
                                         >
+
+                                            {/*REGISTER & REQUIRED CHECK ?????*/}
                                             <input
                                                 type="radio"
                                                 value={type}
                                                 {...register("hotelType", {
-                                                    required: "This field is required",
+                                                    required: "You select a hotel type",
                                                 })}
                                                 className="hidden"/>
                                             {type}
