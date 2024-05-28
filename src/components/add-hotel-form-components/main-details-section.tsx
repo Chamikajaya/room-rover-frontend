@@ -1,8 +1,8 @@
-import {useFormContext} from "react-hook-form";
-import {FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Home, MapPin, Map, NotepadText, DollarSign, Star} from "lucide-react";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
+import { useFormContext } from "react-hook-form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Home, MapPin, Map, NotepadText, DollarSign, Star } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
     Select,
     SelectContent,
@@ -11,57 +11,55 @@ import {
     SelectLabel,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
-import {Separator} from "@/components/ui/separator";
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 export default function MainDetailsSection() {
-
-    // ! May be coz I haven t add register to each form field ???
-
-    const {register, control} = useFormContext();
+    const { register, control, setValue, formState: { errors } } = useFormContext();
 
     return (
-
         <div className="flex flex-col gap-3">
             <FormField
                 control={control}
                 name="name"
-                render={({field}) => (
+                render={({ field }) => (
                     <FormItem>
                         <FormLabel className={"font-normal flex gap-2 items-center"}>
                             Name
-                            <Home/>
+                            <Home />
                         </FormLabel>
                         <FormControl>
                             <Input
                                 {...field}
-                                type={"text"}
-                                placeholder={"hotel name here"}
+                                {...register("name")}
+                                type="text"
+                                placeholder="hotel name here"
                             />
                         </FormControl>
-                        <FormMessage className={"text-red-400 font-normal"}/>
+                        {errors.name && <FormMessage className="text-red-400 font-normal">{errors.name.message}</FormMessage>}
                     </FormItem>
                 )}
             />
 
-            <div className={"flex flex-col gap-3 md:flex-row md:gap-x-6"}>
+            <div className="flex flex-col gap-3 md:flex-row md:gap-x-6">
                 <FormField
                     control={control}
                     name="city"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel className={"font-normal flex gap-2 items-center"}>
                                 City
-                                <Map/>
+                                <Map />
                             </FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}
-                                    type={"text"}
-                                    placeholder={"city name here"}
+                                    {...register("city")}
+                                    type="text"
+                                    placeholder="city name here"
                                 />
                             </FormControl>
-                            <FormMessage className={"text-red-400 font-normal"}/>
+                            {errors.city && <FormMessage className="text-red-400 font-normal">{errors.city.message}</FormMessage>}
                         </FormItem>
                     )}
                 />
@@ -69,20 +67,21 @@ export default function MainDetailsSection() {
                 <FormField
                     control={control}
                     name="country"
-                    render={({field}) => (
+                    render={({ field }) => (
                         <FormItem>
                             <FormLabel className={"font-normal flex gap-2 items-center"}>
                                 Country
-                                <MapPin/>
+                                <MapPin />
                             </FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}
-                                    type={"text"}
-                                    placeholder={"country name here"}
+                                    {...register("country")}
+                                    type="text"
+                                    placeholder="country name here"
                                 />
                             </FormControl>
-                            <FormMessage className={"text-red-400 font-normal"}/>
+                            {errors.country && <FormMessage className="text-red-400 font-normal">{errors.country.message}</FormMessage>}
                         </FormItem>
                     )}
                 />
@@ -91,16 +90,20 @@ export default function MainDetailsSection() {
             <FormField
                 control={control}
                 name="description"
-                render={({field}) => (
+                render={({ field }) => (
                     <FormItem>
                         <FormLabel className={"font-normal flex gap-2 items-center"}>
                             Description
-                            <NotepadText/>
+                            <NotepadText />
                         </FormLabel>
                         <FormControl>
-                            <Textarea placeholder={"describe about your hotel here"}/>
+                            <Textarea
+                                {...field}
+                                {...register("description")}
+                                placeholder="describe about your hotel here"
+                            />
                         </FormControl>
-                        <FormMessage className={"text-red-400 font-normal"}/>
+                        {errors.description && <FormMessage className="text-red-400 font-normal">{errors.description.message}</FormMessage>}
                     </FormItem>
                 )}
             />
@@ -108,21 +111,22 @@ export default function MainDetailsSection() {
             <FormField
                 control={control}
                 name="pricePerNight"
-                render={({field}) => (
+                render={({ field }) => (
                     <FormItem>
                         <FormLabel className={"font-normal flex gap-2 items-center"}>
                             Price Per Night
-                            <DollarSign/>
+                            <DollarSign />
                         </FormLabel>
                         <FormControl>
                             <Input
                                 {...field}
-                                type={"number"}
-                                placeholder={"price per night"}
-                                className={"max-w-[50%]"}
+                                {...register("pricePerNight", { valueAsNumber: true })}
+                                type="number"
+                                placeholder="price per night"
+                                className="max-w-[50%]"
                             />
                         </FormControl>
-                        <FormMessage className={"text-red-400 font-normal"}/>
+                        {errors.pricePerNight && <FormMessage className="text-red-400 font-normal">{errors.pricePerNight.message}</FormMessage>}
                     </FormItem>
                 )}
             />
@@ -130,39 +134,39 @@ export default function MainDetailsSection() {
             <FormField
                 control={control}
                 name="rating"
-                render={({field}) => (
+                render={({ field }) => (
                     <FormItem>
                         <FormLabel className={"font-normal flex gap-2 items-center"}>
                             Rating
-                            <Star/>
+                            <Star />
                         </FormLabel>
                         <FormControl>
-                            <Select>
+                            <Select
+                                onValueChange={(value) => setValue("rating", Number(value))}
+                                defaultValue=""
+                            >
                                 <SelectTrigger className="max-w-[50%]">
-                                    <SelectValue placeholder="Select the rating"/>
+                                    <SelectValue placeholder="Select the rating" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Ratings</SelectLabel>
-
+                                        <SelectItem value="0">0</SelectItem>
                                         <SelectItem value="1">1</SelectItem>
                                         <SelectItem value="2">2</SelectItem>
                                         <SelectItem value="3">3</SelectItem>
                                         <SelectItem value="4">4</SelectItem>
                                         <SelectItem value="5">5</SelectItem>
-
                                     </SelectGroup>
                                 </SelectContent>
                             </Select>
                         </FormControl>
-                        <FormMessage className={"text-red-400 font-normal"}/>
+                        {errors.rating && <FormMessage className="text-red-400 font-normal">{errors.rating.message}</FormMessage>}
                     </FormItem>
                 )}
             />
 
-            <Separator className={"bg-primary"}/>
-
-
+            <Separator className="bg-primary" />
         </div>
-    )
+    );
 }

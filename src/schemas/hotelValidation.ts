@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const hotelCreationSchema = z.object({
     name: z.string().min(1, "Name is required").trim(),
-    description: z.string().min(1, "Description is required").trim(),
+    description: z.string().min(3, "Description should be at least 100 characters long ").trim(),
     hotelType: z.string().min(1, "Hotel Type is required").trim(),
     country: z.string().min(1, "Country is required").trim(),
     city: z.string().min(1, "City is required").trim(),
@@ -19,9 +19,8 @@ export const hotelCreationSchema = z.object({
         .number()
         .positive("Price per night must be a positive number"),
     rating: z
-        .number()
-        .min(0, "Rating must be at least 0")
-        .max(5, "Rating must be at most 5"),
+        .number(),
+
     imageURLs: z.array(z.string().url("Each image URL must be a valid URL")).nonempty("Image URLs are required"),
 });
 
