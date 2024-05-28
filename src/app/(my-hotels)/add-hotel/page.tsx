@@ -1,6 +1,11 @@
+
+import AddHotelForm from "@/components/add-hotel-form-components/add-hotel-form";
+
 export default function AddHotelPage() {
-    // show the add hotel form after checking isLoggedin
     return (
-        <h1>ADD HOTEL</h1>
+        <div className="flex m-4 items-center justify-center">
+            <AddHotelForm/>
+        </div>
+
     );
 }

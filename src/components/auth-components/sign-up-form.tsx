@@ -78,6 +78,7 @@ export default function SignUpForm() {
 
     }
 
+
     return (
         <CardWrapper
             title="First step in finding your dream stay 🏡"

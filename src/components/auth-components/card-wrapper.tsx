@@ -29,7 +29,7 @@ export default function CardWrapper(
     }: CardWrapperProps) {
 
     return (
-        <Card className="w-[400px] shadow-lg shadow-primary">
+        <Card className="w-[800px] shadow-lg shadow-primary">
             <CardHeader>
                 <CardTitle>
                     <Header label={title} formTopic={formTopic}/>
