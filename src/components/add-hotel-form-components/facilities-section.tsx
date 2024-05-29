@@ -12,10 +12,10 @@ import {
 import {hotelFacilities} from "@/constants/hotel-facilities"
 import {CheckCheck} from "lucide-react"
 import {Separator} from "@/components/ui/separator"
-import {HotelCreationSchema} from "@/schemas/hotelValidation";
+import {HotelFormData} from "@/components/add-hotel-form-components/add-hotel-form";
 
 export default function HotelFacilitiesForm() {
-    const {control, register, formState: {errors}} = useFormContext<HotelCreationSchema>()
+    const {control, register, formState: {errors}} = useFormContext<HotelFormData>()
 
     return (
         <>
