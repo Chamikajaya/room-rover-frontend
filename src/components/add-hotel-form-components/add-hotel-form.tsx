@@ -9,6 +9,8 @@ import {Button} from "@/components/ui/button";
 import {useState} from "react";
 
 import ImagesSection from "@/components/add-hotel-form-components/images-section";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 
 export type HotelFormData = {
@@ -27,17 +29,107 @@ export type HotelFormData = {
 
 export default function AddHotelForm() {
 
-    // const [isSubmitting, setIsSubmitting] = useState(false)
-
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const formMethods = useForm<HotelFormData>();
     const {handleSubmit, reset} = formMethods;
 
 
-    const onSubmit = handleSubmit((formData) => {
+    // const onSubmit = handleSubmit(async (formData) => {
+    //     console.log("Form submitted");
+    //     console.log(formData);
+    //
+    //     try {
+    //         setIsSubmitting(true);
+    //
+    //         const response = await axios.post(
+    //             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
+    //             formData,
+    //             {
+    //                 withCredentials: true
+    //             }
+    //         );
+    //
+    //         console.log(response)
+    //
+    //         if (response.status !== 201) {
+    //             toast.error("Something went wrong. Please try again later.");
+    //
+    //         } else {
+    //             toast.success("Hotel created successfully");
+    //             reset();
+    //
+    //         }
+    //         console.log(response.data)
+    //
+    //
+    //     } catch (e) {
+    //         console.log("ERROR - CREATE HOTEL @POST --> " + e);
+    //         // modify if necessary
+    //         toast.error("Something went wrong");
+    //     } finally {
+    //         setIsSubmitting(false);
+    //     }
+    //
+    //
+    // });
+
+    const onSubmit = handleSubmit(async (formData) => {
         console.log("Form submitted");
         console.log(formData);
+
+        try {
+            setIsSubmitting(true);
+
+            const formDataObj = new FormData();
+            formDataObj.append("name", formData.name);
+            formDataObj.append("city", formData.city);
+            formDataObj.append("country", formData.country);
+            formDataObj.append("description", formData.description);
+            formDataObj.append("pricePerNight", formData.pricePerNight.toString());
+            formDataObj.append("starRating", formData.starRating.toString());
+            formDataObj.append("type", formData.type);
+
+            formData.facilities.forEach((facility, index) => {
+                formDataObj.append(`facilities[${index}]`, facility);
+            });
+
+            if (formData.imageUrls) {
+                formData.imageUrls.forEach((url, index) => {
+                    formDataObj.append(`imageUrls[${index}]`, url);
+                });
+            }
+
+            Array.from(formData.imageFiles).forEach((imageFile) => {
+                formDataObj.append(`imageFiles`, imageFile);
+            });
+
+
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
+                formDataObj,
+                {
+                    withCredentials: true,
+                }
+            );
+
+            console.log(response);
+
+            if (response.status !== 201) {
+                toast.error("Something went wrong. Please try again later.");
+            } else {
+                toast.success("Hotel created successfully");
+                reset();
+            }
+
+        } catch (e) {
+            console.log("ERROR - CREATE HOTEL @POST --> " + e);
+            toast.error("Something went wrong");
+        } finally {
+            setIsSubmitting(false);
+        }
     });
+
 
     return (
         <CardWrapper
@@ -52,7 +144,7 @@ export default function AddHotelForm() {
                     <FacilitiesSection/>
                     <ImagesSection/>
                     <div className="flex justify-center">
-                        <Button type="submit" className="w-[50%]" size={"sm"}>
+                        <Button type="submit" className="w-[50%]" size={"sm"} disabled={isSubmitting}>
                             Submit
                         </Button>
                     </div>
