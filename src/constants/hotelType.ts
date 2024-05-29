@@ -13,5 +13,7 @@ export const hotelType = [
     "Resort",
     "Spa",
     "Suite",
-    "Vacation Rental"
+    "Vacation Rental",
+    "Villa",
+
 ];

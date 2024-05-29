@@ -27,9 +27,10 @@ export default function SignUpForm() {
 
     return (
         <CardWrapper
-            title="Let the world know about your hotel 🏠"
             formTopic="Add Hotel ➕"
+            title="Let the world know about your hotel 🏠"
         >
+            {/*We have to use FormProvider since we have broken down the form into multiple components*/}
             <FormProvider {...formMethods}>
                 <form onSubmit={formMethods.handleSubmit(onSubmit)}>
                     <MainDetailsSection />
