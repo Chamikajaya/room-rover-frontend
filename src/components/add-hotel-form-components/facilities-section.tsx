@@ -74,7 +74,7 @@ export default function HotelFacilitiesForm() {
                         </FormItem>
                     )}/>
             </div>
-            <Separator className={"bg-primary"}/>
+            <Separator className={"bg-primary my-4"}/>
         </>
     )
 }

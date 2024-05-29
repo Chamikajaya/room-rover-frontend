@@ -11,67 +11,19 @@ import {
 } from "@/components/ui/form";
 import {Castle} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
-import {HotelCreationSchema} from "@/schemas/hotelValidation";
 import {Input} from "@/components/ui/input";
-
-// export default function HotelTypeSection() {
-//     const { control, watch, register, formState: { errors } } = useFormContext<HotelCreationSchema>();
-//     const typeWatch = watch("hotelType");
-//
-//     return (
-//         <>
-//             <div className="my-6">
-//                 <FormField
-//                     control={control}
-//                     name="hotelType"
-//                     render={({ field }) => (
-//                         <FormItem>
-//                             <FormLabel className="font-normal flex gap-2 items-center mb-4">
-//                                 Hotel Type
-//                                 <Castle />
-//                             </FormLabel>
-//                             <FormControl>
-//                                 <div className="grid grid-cols-3 gap-2 md:grid-cols-3">
-//                                     {hotelType.map((type, idx) => (
-//                                         <label
-//                                             key={idx}
-//                                             className={`cursor-pointer text-center text-sm rounded-full px-4 py-2 flex items-center justify-center ${typeWatch === type
-//                                                 ? "bg-purple-500 text-white font-semibold"
-//                                                 : "bg-primary-foreground text-black"}`}
-//                                         >
-//                                             <input
-//                                                 type="radio"
-//                                                 value={type}
-//                                                 {...register("hotelType", {
-//                                                     required: "You must select a hotel type",
-//                                                 })}
-//                                                 className="hidden"
-//                                             />
-//                                             {type}
-//                                         </label>
-//                                     ))}
-//                                 </div>
-//                             </FormControl>
-//                             {errors.hotelType && <FormMessage className="text-red-400 font-normal">{errors.hotelType.message}</FormMessage>}
-//                         </FormItem>
-//                     )}
-//                 />
-//             </div>
-//             <Separator className={"bg-primary"} />
-//         </>
-//     );
-// }
+import {HotelFormData} from "@/components/add-hotel-form-components/add-hotel-form";
 
 export default function HotelTypeSection() {
-    const {control, watch, register, formState: {errors}} = useFormContext<HotelCreationSchema>();
-    const typeWatch = watch("hotelType");
+    const {control, watch, register, formState: {errors}} = useFormContext<HotelFormData>();
+    const typeWatch = watch("type");
 
     return (
         <>
-            <div className="my-6 ">
+            <div className="my-6">
                 <FormField
                     control={control}
-                    name="hotelType"
+                    name="type"
                     render={() => (
                         <FormItem>
                             <FormLabel className="font-normal flex gap-2 items-center mb-4">
@@ -90,7 +42,7 @@ export default function HotelTypeSection() {
                                             <Input
                                                 type="radio"
                                                 value={type}
-                                                {...register("hotelType", {
+                                                {...register("type", {
                                                     required: "You must select a hotel type",
                                                 })}
                                                 className="hidden"
@@ -100,13 +52,13 @@ export default function HotelTypeSection() {
                                     ))}
                                 </div>
                             </FormControl>
-                            {errors.hotelType && <FormMessage
-                                className="text-red-400 font-normal">{errors.hotelType.message}</FormMessage>}
+                            {errors.type && <FormMessage
+                                className="text-red-400 font-normal">{errors.type.message}</FormMessage>}
                         </FormItem>
                     )}
                 />
             </div>
-            <Separator className={"bg-primary"}/>
+            <Separator className={"bg-primary my-4"}/>
         </>
     );
 }

@@ -82,34 +82,35 @@ export default function SignUpForm() {
             formTopic="Add Hotel ➕"
             title="Let the world know about your hotel 🏠"
         >
-            {/*/!*We have to use FormProvider since we have broken down the form into multiple components*!/*/}
-            {/*<FormProvider {...formMethods}>*/}
-            {/*    <form onSubmit={formMethods.handleSubmit(onSubmit)}>*/}
-            {/*        <MainDetailsSection  />*/}
-            {/*        /!*<HotelTypeSection />*!/*/}
-            {/*        /!*<FacilitiesSection/>*!/*/}
-            {/*        /!*<ImagesSection/>*!/*/}
-            {/*        <div className="flex justify-center">*/}
-            {/*            <Button type="submit" className="w-[50%]" size={"sm"} >*/}
-            {/*                Submit*/}
-            {/*            </Button>*/}
-            {/*        </div>*/}
-            {/*    </form>*/}
-            {/*</FormProvider>*/}
-
-
+            {/*We have to use FormProvider since we have broken down the form into multiple components*/}
             <FormProvider {...formMethods}>
-                <form  onSubmit={onSubmit}>
-
-                    <MainDetailsSection />
-                    <Button type="submit" className="w-full" size={"sm"}  >
-                        Submit
-                    </Button>
-
+                <form onSubmit={(onSubmit)}>
+                    <MainDetailsSection  />
+                    <HotelTypeSection />
+                    <FacilitiesSection/>
+                    {/*<ImagesSection/>*/}
+                    <div className="flex justify-center">
+                        <Button type="submit" className="w-[50%]" size={"sm"} >
+                            Submit
+                        </Button>
+                    </div>
                 </form>
-
-
             </FormProvider>
+
+
+            {/*<FormProvider {...formMethods}>*/}
+            {/*    <form  onSubmit={onSubmit}>*/}
+
+            {/*        <MainDetailsSection />*/}
+            {/*        <*/}
+            {/*        /!*<Button type="submit" className="w-full" size={"sm"}  >*!/*/}
+            {/*        /!*    Submit*!/*/}
+            {/*        /!*</Button>*!/*/}
+
+            {/*    </form>*/}
+
+
+            {/*</FormProvider>*/}
 
         </CardWrapper>
 

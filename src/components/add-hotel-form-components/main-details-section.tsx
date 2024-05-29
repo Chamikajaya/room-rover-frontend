@@ -115,7 +115,7 @@ export default function MainDetailsSection() {
                 </FormLabel>
                 <FormControl>
                     <Input
-                        {...register("pricePerNight", { required: "This field is required" })}
+                        {...register("pricePerNight", {required: "This field is required"})}
                         type="number"
                         placeholder="price per night"
                         className="max-w-[50%]"
@@ -137,9 +137,9 @@ export default function MainDetailsSection() {
                         {...register("starRating", {
                             required: "This field is required",
                         })}
-                 >
+                    >
                         <SelectTrigger className="max-w-[50%]">
-                            <SelectValue placeholder="Select the rating" />
+                            <SelectValue placeholder="Select the rating"/>
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
@@ -156,9 +156,7 @@ export default function MainDetailsSection() {
             </FormItem>
 
 
-
-            <Separator className="bg-primary"/>
+            <Separator className="bg-primary my-4"/>
         </div>
     )
-        ;
 }
