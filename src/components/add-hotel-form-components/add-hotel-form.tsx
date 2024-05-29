@@ -25,7 +25,7 @@ export type HotelFormData = {
 
 };
 
-export default function SignUpForm() {
+export default function AddHotelForm() {
 
     // const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -50,7 +50,7 @@ export default function SignUpForm() {
                     <MainDetailsSection/>
                     <HotelTypeSection/>
                     <FacilitiesSection/>
-                    {/*<ImagesSection/>*/}
+                    <ImagesSection/>
                     <div className="flex justify-center">
                         <Button type="submit" className="w-[50%]" size={"sm"}>
                             Submit

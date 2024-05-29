@@ -99,7 +99,11 @@ export default function MainDetailsSection() {
                 <FormControl>
                     <Textarea
                         rows={8}
-                        {...register("description", {required: "This field is required"})}
+                        {...register("description", {
+                            required: "This field is required",
+                            minLength: { value: 10, message: "Description should be at least 100 characters" },
+                            maxLength: { value: 500, message: "Description should not exceed 500 characters" }
+                        })}
                         placeholder="describe about your hotel here"
                     />
                 </FormControl>
@@ -115,7 +119,10 @@ export default function MainDetailsSection() {
                 </FormLabel>
                 <FormControl>
                     <Input
-                        {...register("pricePerNight", {required: "This field is required"})}
+                        {...register("pricePerNight", {
+                            required: "This field is required",
+                            min: { value: 1, message: "Price must be a positive number" },
+                        })}
                         type="number"
                         placeholder="price per night"
                         className="max-w-[50%]"
