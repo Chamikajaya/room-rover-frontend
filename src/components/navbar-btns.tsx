@@ -23,7 +23,7 @@ export default function NavbarButtons() {
                             Bookings
                         </Button>
                     </Link>
-                    <Link href={"/"}>
+                    <Link href={"/my-hotels"}>
                         <Button
                             className={"font-semibold hover:text-primary hover:bg-secondary"}
                             variant={"secondary"}

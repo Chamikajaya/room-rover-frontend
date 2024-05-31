@@ -6,6 +6,9 @@ import toast from "react-hot-toast";
 import {format} from "date-fns";
 import {columns, HotelCol} from "@/app/(my-hotels)/my-hotels/components/columns";
 import {DataTable} from "@/components/ui/data-table";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import {Plus} from "lucide-react";
 
 export default function MyHotelsPage() {
 
@@ -18,7 +21,6 @@ export default function MyHotelsPage() {
 
 
         const getAllMyHotels = async () => {
-            console.log("Running")
 
             try {
 
@@ -27,8 +29,6 @@ export default function MyHotelsPage() {
                     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
                     {withCredentials: true}
                 );
-
-                console.log(response);
 
                 setHotels(response.data);
 
@@ -63,13 +63,20 @@ export default function MyHotelsPage() {
         createdAt: format(hotel.createdAt, "MMMM do, yyyy"),
     }));
 
-    console.log("Here are my hotels");
-    console.log(formattedHotels);
-
-    // ! Account for the case when there is no hotels yet added by the user ->
 
     return (
-        <div className="flex m-4 items-center justify-center min-w-full">
+        <div className="flex flex-col m-4 items-center justify-center min-w-full my-10">
+
+            <Link href={"/add-hotel"}>
+                <Button
+                    className={"font-semibold hover:text-primary hover:bg-secondary"}
+                    variant={"default"}
+                >
+                    <Plus size={20} className={"mr-2"}/>
+                    Add Hotel
+                </Button>
+            </Link>
+
             <div>
                 <DataTable columns={columns} data={formattedHotels} searchKey={"name"}/>
             </div>

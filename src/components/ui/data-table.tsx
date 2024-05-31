@@ -54,19 +54,6 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
-            {/*<div className="flex items-center  justify-center py-4">*/}
-            {/*    <span className="flex items-center">*/}
-            {/*    <Search size={20} color="gray" className="mr-2"/>*/}
-            {/*    <Input*/}
-            {/*        placeholder="Search ..."*/}
-            {/*        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}*/}
-            {/*        onChange={(event) =>*/}
-            {/*            table.getColumn(searchKey)?.setFilterValue(event.target.value)*/}
-            {/*        }*/}
-            {/*        className="max-w-sm"*/}
-            {/*    />*/}
-            {/*    </span>*/}
-            {/*</div>*/}
             <div className="flex items-center justify-center py-4">
                 <div className="relative max-w-sm">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">

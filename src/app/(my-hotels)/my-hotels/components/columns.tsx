@@ -1,6 +1,7 @@
 "use client"
 
 import {ColumnDef} from "@tanstack/react-table"
+import CellAction from "@/app/(my-hotels)/my-hotels/components/cell-action";
 
 
 export type HotelCol = {
@@ -9,7 +10,7 @@ export type HotelCol = {
     pricePerNight: number
     starRating: number
     type: string
-    createdAt: string
+    createdAt: string  // ! Change this to updated at later + in the formattedObj as well
 }
 
 export const columns: ColumnDef<HotelCol>[] = [
@@ -34,4 +35,10 @@ export const columns: ColumnDef<HotelCol>[] = [
         accessorKey: "type",
         header: "Hotel Type",
     },
+    {
+        id: "actions",
+        header: "Settings",
+        cell: ({row}) => <CellAction data={row.original}/>,  // row.original is the HotelCol object for the row
+    }
+
 ]
