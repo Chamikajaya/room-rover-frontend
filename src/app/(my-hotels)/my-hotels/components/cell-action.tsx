@@ -5,7 +5,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Button} from "@/components/ui/button";
@@ -28,7 +27,7 @@ export default function CellAction({data}: CellActionProps) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align={"start"}>
-               <DropdownMenuItem onClick={() => router.push("/add-hotel")}>
+               <DropdownMenuItem onClick={() => router.push(`/update-hotel/${data.id}`)}>
                   <div className={"flex items-center"}>
                        <Pencil size={20} className={"mr-2"}/>
                        Edit

@@ -6,13 +6,11 @@ import MainDetailsSection from "@/components/add-hotel-form-components/main-deta
 import HotelTypeSection from "@/components/add-hotel-form-components/hotel-type-section"
 import FacilitiesSection from "@/components/add-hotel-form-components/facilities-section";
 import {Button} from "@/components/ui/button";
-import {useState} from "react";
-
+import {useEffect, useState} from "react";
 import ImagesSection from "@/components/add-hotel-form-components/images-section";
 import toast from "react-hot-toast";
 import axios from "axios";
 import {Loader2} from "lucide-react";
-
 
 export type HotelFormData = {
     name: string;
@@ -25,30 +23,35 @@ export type HotelFormData = {
     facilities: string[];
     imageFiles: FileList;
     imageUrls: string[];
-
 };
 
-export default function AddHotelForm() {
 
-    const [isSubmitting, setIsSubmitting] = useState(false)
+interface AddHotelFormProps {
+    hotel?: HotelFormData;
+}
 
-    const formMethods = useForm<HotelFormData>();
+
+// Designed this component so that I can reuse the same for both adding and updating hotels by passing the hotel object as a prop. 😊😊😊
+export default function AddHotelForm({hotel}: AddHotelFormProps) {
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const formMethods = useForm<HotelFormData>({
+        defaultValues: hotel,
+    });
     const {handleSubmit, reset} = formMethods;
 
+    useEffect(() => {
+        if (hotel) {
+            reset(hotel);
+        }
+    }, [hotel, reset]);
 
     const onSubmit = handleSubmit(async (formData) => {
-
         console.log(formData);
 
         try {
             setIsSubmitting(true);
-
-            //? Why do we have to create a new FormData object?  -->
-            /*
-            the formData object received from the react-hook-form library contains the form data as a plain JavaScript object. However, when dealing with file uploads (in this case, the imageFiles field), the server expects the data to be sent in a specific format called multipart/form-data. This format allows for sending both regular form data and file data in a single request.
-
-             To create the multipart/form-data format, we need to use the FormData object provided by the browser. This object allows us to append different types of data, including strings, numbers, and files. In the onSubmit function, a new FormData object (formDataObj) is created, and the form data is appended to it using the append method.
-             */
 
             const formDataObj = new FormData();
             formDataObj.append("name", formData.name);
@@ -73,13 +76,12 @@ export default function AddHotelForm() {
                 formDataObj.append(`imageFiles`, imageFile);
             });
 
-
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
                 formDataObj,
                 {
                     withCredentials: true,
-                }  // The withCredentials option is set to true to include cookies in the request.
+                }
             );
 
             console.log(response);
@@ -99,15 +101,13 @@ export default function AddHotelForm() {
         }
     });
 
-
     return (
         <CardWrapper
             formTopic="Add Hotel ➕"
             title="Let the world know about your hotel 🏠"
         >
-            {/*We have to use FormProvider since we have broken down the form into multiple components*/}
             <FormProvider {...formMethods}>
-                <form onSubmit={(onSubmit)}>
+                <form onSubmit={onSubmit}>
                     <MainDetailsSection/>
                     <HotelTypeSection/>
                     <FacilitiesSection/>
@@ -126,9 +126,6 @@ export default function AddHotelForm() {
                     </div>
                 </form>
             </FormProvider>
-
         </CardWrapper>
-
-
-    )
+    );
 }
