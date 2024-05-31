@@ -45,7 +45,6 @@ export default function ImagesSection() {
                                                     <Image
                                                         src={imgUrl}
                                                         alt={`Image ${idx}`}
-                                                        layout="responsive"
                                                         width={400}
                                                         height={400}
                                                         className="object-cover"
@@ -71,7 +70,8 @@ export default function ImagesSection() {
                                         className={"mt-10"}
                                         {...register(("imageFiles"), {
                                             validate: (imageFiles) => {
-                                                const totalLength = imageFiles.length;
+
+                                                const totalLength = imageFiles.length + (alreadyExistingImgUrls?.length || 0);
 
                                                 if (totalLength === 0) {
                                                     return "You must upload at least one image";
@@ -92,3 +92,4 @@ export default function ImagesSection() {
         </>
     );
 }
+

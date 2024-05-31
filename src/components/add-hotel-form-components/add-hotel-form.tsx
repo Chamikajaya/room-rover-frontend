@@ -13,6 +13,7 @@ import axios from "axios";
 import {Loader2} from "lucide-react";
 
 export type HotelFormData = {
+    id?: string;  // * This is optional because when we are adding a new hotel, we don't have the hotelId  👆
     name: string;
     city: string;
     country: string;
@@ -59,6 +60,13 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
             setIsSubmitting(true);
 
             const formDataObj = new FormData();
+            console.log(hotel)
+
+            // If hotel is present, append the hotelId to the formData
+            if (hotel) {
+                formDataObj.append("hotelId", hotel.id as string)
+            }
+
             formDataObj.append("name", formData.name);
             formDataObj.append("city", formData.city);
             formDataObj.append("country", formData.country);
@@ -81,21 +89,41 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
                 formDataObj.append(`imageFiles`, imageFile);
             });
 
-            const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
-                formDataObj,
-                {
-                    withCredentials: true,
+            // Check if hotel is present
+            if (hotel) {
+                console.log(hotel.id)
+
+                // If hotel is present, send a PUT request to update the hotel
+                const response = await axios.put(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels/${hotel.id}`,
+                    formDataObj,
+                    {
+                        withCredentials: true,
+                    }
+                );
+
+                if (response.status !== 200) {
+                    toast.error("Something went wrong. Please try again later.");
+                } else {
+                    toast.success("Hotel updated successfully");
+                    reset();
                 }
-            );
-
-            // console.log(response);
-
-            if (response.status !== 201) {
-                toast.error("Something went wrong. Please try again later.");
             } else {
-                toast.success("Hotel created successfully");
-                reset();
+                // If hotel is not present, send a POST request to create a new hotel
+                const response = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
+                    formDataObj,
+                    {
+                        withCredentials: true,
+                    }
+                );
+
+                if (response.status !== 201) {
+                    toast.error("Something went wrong. Please try again later.");
+                } else {
+                    toast.success("Hotel created successfully");
+                    reset();
+                }
             }
 
         } catch (e) {

@@ -101,7 +101,7 @@ export default function MainDetailsSection() {
                         rows={8}
                         {...register("description", {
                             required: "This field is required",
-                            minLength: { value: 500, message: "Description should be at least 500 characters" },
+                            minLength: { value: 3, message: "Description should be at least 500 characters" },  // ! Change later
                             maxLength: { value: 5000, message: "Description should not exceed 5000 characters" }
                         })}
                         placeholder="describe about your hotel here"
