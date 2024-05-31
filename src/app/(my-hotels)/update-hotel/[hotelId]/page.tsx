@@ -24,6 +24,8 @@ export default function UpdateHotelPage() {
                 );
 
                 setHotel(response.data);
+
+
             } catch (e) {
                 setError("Failed to fetch hotel data.");
                 console.error("ERROR - GET HOTEL @GET -->", e);
@@ -37,6 +39,8 @@ export default function UpdateHotelPage() {
             getHotel();
         }
     }, [hotelId]);
+
+    console.log(hotel)
 
     if (loading) {
         return (

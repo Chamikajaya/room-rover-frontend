@@ -2,6 +2,8 @@
 
 import {ColumnDef} from "@tanstack/react-table"
 import CellAction from "@/app/(my-hotels)/my-hotels/components/cell-action";
+import {Button} from "@/components/ui/button";
+import {ArrowUpDown} from "lucide-react";
 
 
 export type HotelCol = {
@@ -10,7 +12,7 @@ export type HotelCol = {
     pricePerNight: number
     starRating: number
     type: string
-    createdAt: string  // ! Change this to updated at later + in the formattedObj as well
+    updatedAt: string  // ! Change this to updated at later + in the formattedObj as well
 }
 
 export const columns: ColumnDef<HotelCol>[] = [
@@ -19,8 +21,18 @@ export const columns: ColumnDef<HotelCol>[] = [
         header: "Name",
     },
     {
-        accessorKey: "createdAt",
-        header: "Created At",
+        accessorKey: "updatedAt",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Last Updated
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "pricePerNight",

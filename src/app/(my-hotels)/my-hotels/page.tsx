@@ -60,7 +60,7 @@ export default function MyHotelsPage() {
         pricePerNight: hotel.pricePerNight,
         starRating: hotel.starRating,
         type: hotel.type,
-        createdAt: format(hotel.createdAt, "MMMM do, yyyy"),
+        updatedAt: format(hotel.updatedAt, "MMMM do, yyyy"),
     }));
 
 

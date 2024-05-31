@@ -2,6 +2,10 @@
 
 import {
     ColumnDef,
+    SortingState,
+    getSortedRowModel,
+
+
     ColumnFiltersState,
     flexRender,
     getCoreRowModel,
@@ -23,6 +27,7 @@ import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import React from "react"
 import {Search} from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 
 
 interface DataTableProps<TData, TValue> {
@@ -36,6 +41,14 @@ export function DataTable<TData, TValue>({
                                              data,
                                              searchKey,
                                          }: DataTableProps<TData, TValue>) {
+
+    const [sorting, setSorting] = React.useState<SortingState>([
+        {
+            id: 'updatedAt',
+            desc: true,
+        },
+    ])
+
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
@@ -47,8 +60,11 @@ export function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onSortingChange: setSorting,
+        getSortedRowModel: getSortedRowModel(),
         state: {
             columnFilters,
+            sorting,
         },
     })
 

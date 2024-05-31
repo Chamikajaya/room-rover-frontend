@@ -22,7 +22,8 @@ export type HotelFormData = {
     starRating: number;
     facilities: string[];
     imageFiles: FileList;
-    imageUrls: string[];
+    imageURLs: string[];
+
 };
 
 
@@ -70,8 +71,8 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
                 formDataObj.append(`facilities[${index}]`, facility);
             });
 
-            if (formData.imageUrls) {
-                formData.imageUrls.forEach((url, index) => {
+            if (formData.imageURLs) {
+                formData.imageURLs.forEach((url, index) => {
                     formDataObj.append(`imageUrls[${index}]`, url);
                 });
             }
@@ -88,7 +89,7 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
                 }
             );
 
-            console.log(response);
+            // console.log(response);
 
             if (response.status !== 201) {
                 toast.error("Something went wrong. Please try again later.");
