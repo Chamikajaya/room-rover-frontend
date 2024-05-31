@@ -37,10 +37,14 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const formMethods = useForm<HotelFormData>({
-        defaultValues: hotel,
+        defaultValues: hotel,  // * If hotel is passed, then the form will be pre-filled with the hotel data
     });
     const {handleSubmit, reset} = formMethods;
 
+
+    /*
+    The useEffect hook is used to watch for changes in the hotel prop. When hotel data changes (i.e., when it's fetched and passed to the component), the reset function from react-hook-form is called to update the form values with the new data.
+     */
     useEffect(() => {
         if (hotel) {
             reset(hotel);
