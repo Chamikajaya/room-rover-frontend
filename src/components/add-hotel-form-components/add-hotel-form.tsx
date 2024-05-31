@@ -11,6 +11,7 @@ import {useState} from "react";
 import ImagesSection from "@/components/add-hotel-form-components/images-section";
 import toast from "react-hot-toast";
 import axios from "axios";
+import {Loader2} from "lucide-react";
 
 
 export type HotelFormData = {
@@ -35,51 +36,19 @@ export default function AddHotelForm() {
     const {handleSubmit, reset} = formMethods;
 
 
-    // const onSubmit = handleSubmit(async (formData) => {
-    //     console.log("Form submitted");
-    //     console.log(formData);
-    //
-    //     try {
-    //         setIsSubmitting(true);
-    //
-    //         const response = await axios.post(
-    //             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels`,
-    //             formData,
-    //             {
-    //                 withCredentials: true
-    //             }
-    //         );
-    //
-    //         console.log(response)
-    //
-    //         if (response.status !== 201) {
-    //             toast.error("Something went wrong. Please try again later.");
-    //
-    //         } else {
-    //             toast.success("Hotel created successfully");
-    //             reset();
-    //
-    //         }
-    //         console.log(response.data)
-    //
-    //
-    //     } catch (e) {
-    //         console.log("ERROR - CREATE HOTEL @POST --> " + e);
-    //         // modify if necessary
-    //         toast.error("Something went wrong");
-    //     } finally {
-    //         setIsSubmitting(false);
-    //     }
-    //
-    //
-    // });
-
     const onSubmit = handleSubmit(async (formData) => {
-        console.log("Form submitted");
+
         console.log(formData);
 
         try {
             setIsSubmitting(true);
+
+            //? Why do we have to create a new FormData object?  -->
+            /*
+            the formData object received from the react-hook-form library contains the form data as a plain JavaScript object. However, when dealing with file uploads (in this case, the imageFiles field), the server expects the data to be sent in a specific format called multipart/form-data. This format allows for sending both regular form data and file data in a single request.
+
+             To create the multipart/form-data format, we need to use the FormData object provided by the browser. This object allows us to append different types of data, including strings, numbers, and files. In the onSubmit function, a new FormData object (formDataObj) is created, and the form data is appended to it using the append method.
+             */
 
             const formDataObj = new FormData();
             formDataObj.append("name", formData.name);
@@ -110,7 +79,7 @@ export default function AddHotelForm() {
                 formDataObj,
                 {
                     withCredentials: true,
-                }
+                }  // The withCredentials option is set to true to include cookies in the request.
             );
 
             console.log(response);
@@ -145,26 +114,18 @@ export default function AddHotelForm() {
                     <ImagesSection/>
                     <div className="flex justify-center">
                         <Button type="submit" className="w-[50%]" size={"sm"} disabled={isSubmitting}>
-                            Submit
+                            {isSubmitting ? (
+                                <>
+                                    <Loader2 className={"animate-spin mr-3"}></Loader2>
+                                    <span>Submitting</span>
+                                </>
+                            ) : (
+                                <span>Submit</span>
+                            )}
                         </Button>
                     </div>
                 </form>
             </FormProvider>
-
-
-            {/*<FormProvider {...formMethods}>*/}
-            {/*    <form  onSubmit={onSubmit}>*/}
-
-            {/*        <MainDetailsSection />*/}
-            {/*        <*/}
-            {/*        /!*<Button type="submit" className="w-full" size={"sm"}  >*!/*/}
-            {/*        /!*    Submit*!/*/}
-            {/*        /!*</Button>*!/*/}
-
-            {/*    </form>*/}
-
-
-            {/*</FormProvider>*/}
 
         </CardWrapper>
 

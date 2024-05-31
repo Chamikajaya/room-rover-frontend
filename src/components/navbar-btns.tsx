@@ -10,6 +10,7 @@ export default function NavbarButtons() {
     // @ts-ignore
     const {isAuthenticated} = useContext(AuthContext);
 
+
     return (
         <>
             {isAuthenticated ? (
