@@ -2,8 +2,10 @@
 
 import {
     ColumnDef,
+    ColumnFiltersState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table"
@@ -18,26 +20,68 @@ import {
 } from "@/components/ui/table"
 
 import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import React from "react"
+import {Search} from "lucide-react";
 
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    searchKey: string
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
+                                             searchKey,
                                          }: DataTableProps<TData, TValue>) {
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+        []
+    )
+
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
+        state: {
+            columnFilters,
+        },
     })
 
     return (
         <div>
+            {/*<div className="flex items-center  justify-center py-4">*/}
+            {/*    <span className="flex items-center">*/}
+            {/*    <Search size={20} color="gray" className="mr-2"/>*/}
+            {/*    <Input*/}
+            {/*        placeholder="Search ..."*/}
+            {/*        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}*/}
+            {/*        onChange={(event) =>*/}
+            {/*            table.getColumn(searchKey)?.setFilterValue(event.target.value)*/}
+            {/*        }*/}
+            {/*        className="max-w-sm"*/}
+            {/*    />*/}
+            {/*    </span>*/}
+            {/*</div>*/}
+            <div className="flex items-center justify-center py-4">
+                <div className="relative max-w-sm">
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <Search size={20} color="#6D28D9"/>
+                </span>
+                    <Input
+                        placeholder="Search ..."
+                        value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn(searchKey)?.setFilterValue(event.target.value)
+                        }
+                        className="pl-10"
+                    />
+                </div>
+            </div>
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>

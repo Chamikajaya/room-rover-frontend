@@ -69,9 +69,11 @@ export default function MyHotelsPage() {
     // ! Account for the case when there is no hotels yet added by the user ->
 
     return (
-        <div>
-            <h1>My Hotels are here</h1>
-            <DataTable columns={columns} data={formattedHotels}/>
+        <div className="flex m-4 items-center justify-center min-w-full">
+            <div>
+                <DataTable columns={columns} data={formattedHotels} searchKey={"name"}/>
+            </div>
+
         </div>
     )
 }
