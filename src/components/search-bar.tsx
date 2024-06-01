@@ -1,0 +1,225 @@
+import React, { useContext } from "react";
+import SearchContext from "../../context/search-context";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarCheck } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import { Calendar } from "@/components/ui/calendar";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const FormSchema = z.object({
+    destination: z.string().min(3, "Destination must have at least 3 letters"),
+    checkIn: z.date({
+        required_error: "A check-in date is required.",
+    }),
+    checkOut: z.date({
+        required_error: "A check-out date is required.",
+    }),
+    numAdults: z.number({
+        required_error: "The number of adults is required.",
+    }),
+    numChildren: z.number({
+        required_error: "The number of children is required.",
+    }),
+});
+
+export default function SearchBar() {
+    const search = useContext(SearchContext);
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+    });
+
+    const [checkIn, setCheckIn] = React.useState<Date>(new Date(search.checkIn));
+    const [checkOut, setCheckOut] = React.useState<Date>(new Date(search.checkOut));
+    const [numAdults, setNumAdults] = React.useState<number>(search.numAdults);
+    const [numChildren, setNumChildren] = React.useState<number>(search.numChildren);
+    const [destination, setDestination] = React.useState<string>(search.destination);
+
+    const onSubmit = (formData: z.infer<typeof FormSchema>) => {
+        search.saveSearch(checkIn, checkOut, numAdults, numChildren, destination, search.hotelId);
+    };
+
+    return (
+        <div className="mt-10 mx-4 md:mx-15 lg:mx-10">
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="p-4 bg-gray-900 rounded-2xl shadow-lg grid grid-cols-1 lg:grid-cols-5 gap-5"
+                >
+                    {/* DESTINATION */}
+                    <FormField
+                        control={form.control}
+                        name="destination"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        type="text"
+                                        placeholder="Destination"
+                                        className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </FormControl>
+                                {form.formState.errors.destination && (
+                                    <FormMessage className="text-red-400 font-normal">
+                                        {form.formState.errors.destination.message}
+                                    </FormMessage>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* CHECK IN DATE */}
+                    <FormField
+                        control={form.control}
+                        name="checkIn"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant="outline"
+                                                className={cn(
+                                                    "w-full text-left font-normal bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500",
+                                                    !field.value && "text-gray-500"
+                                                )}
+                                            >
+                                                {field.value ? format(field.value, "PPP") : <span>Check-in</span>}
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="end">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={(date) => {
+                                                field.onChange(date);
+                                                setCheckIn(date);
+                                            }}
+                                            disabled={(date) =>
+                                                date < new Date() || date > new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                                            }
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* CHECK OUT DATE */}
+                    <FormField
+                        control={form.control}
+                        name="checkOut"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <FormControl>
+                                            <Button
+                                                variant="outline"
+                                                className={cn(
+                                                    "w-full text-left font-normal bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500",
+                                                    !field.value && "text-gray-500"
+                                                )}
+                                            >
+                                                {field.value ? format(field.value, "PPP") : <span>Check-out</span>}
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
+                                            </Button>
+                                        </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="end">
+                                        <Calendar
+                                            mode="single"
+                                            selected={field.value}
+                                            onSelect={(date) => {
+                                                field.onChange(date);
+                                                setCheckOut(date);
+                                            }}
+                                            disabled={(date) =>
+                                                date < checkIn || date > new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                                            }
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* ADULTS COUNT */}
+                    <FormField
+                        control={form.control}
+                        name="numAdults"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        type="number"
+                                        min={1}
+                                        max={30}
+                                        placeholder="Adults"
+                                        className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </FormControl>
+                                {form.formState.errors.numAdults && (
+                                    <FormMessage className="text-red-400 font-normal">
+                                        {form.formState.errors.numAdults.message}
+                                    </FormMessage>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* CHILDREN COUNT */}
+                    <FormField
+                        control={form.control}
+                        name="numChildren"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                                <FormControl>
+                                    <Input
+                                        {...field}
+                                        type="number"
+                                        min={0}
+                                        max={10}
+                                        placeholder="Children"
+                                        className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                    />
+                                </FormControl>
+                                {form.formState.errors.numChildren && (
+                                    <FormMessage className="text-red-400 font-normal">
+                                        {form.formState.errors.numChildren.message}
+                                    </FormMessage>
+                                )}
+                            </FormItem>
+                        )}
+                    />
+                </form>
+            </Form>
+        </div>
+    );
+}

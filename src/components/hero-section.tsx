@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import SearchBar from "@/components/search-bar";
 
 export default function HeroSection() {
     return (
@@ -11,7 +12,7 @@ export default function HeroSection() {
                     Premium hotels at not so premium prices
                 </p>
             </div>
-
+            <SearchBar/>
         </div>
     );
 }
