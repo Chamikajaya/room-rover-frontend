@@ -34,7 +34,7 @@ export default function CellAction({data}: CellActionProps) {
             window.location.reload();
             toast.success("Hotel deleted successfully.")
         } catch {
-            toast.error('Error deleting');
+            toast.error('An error occurred while deleting.');
         } finally {
             setLoading(false);
             setOpen(false);

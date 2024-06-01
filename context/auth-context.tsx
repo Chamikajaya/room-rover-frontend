@@ -56,11 +56,13 @@ export function AuthProvider({children}: authProviderProps) {
         }
     }
 
+    // Check authentication status on component mount , ensuring the authentication status is checked as soon as the component is rendered.
     useEffect(() => {
         checkAuth();
     }, []);
 
     return (
+        // This makes the isAuthenticated, checkAuth, and user values available to any component that consumes the AuthContext. ==>
         <AuthContext.Provider value={{isAuthenticated, checkAuth, user}}>
             {children}
         </AuthContext.Provider>
