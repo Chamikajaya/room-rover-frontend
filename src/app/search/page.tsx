@@ -1,12 +1,14 @@
 "use client";
 
 import SearchContext from "../../../context/search-context";
-import { useContext, useState, useEffect } from "react";
+import {useContext, useState, useEffect} from "react";
 import axios from "axios";
 
-// Assuming you have defined this type
-import { SearchParams } from "@/types/searchParamsTypes";
+import {SearchParams} from "@/types/searchParamsTypes";
 import toast from "react-hot-toast";
+import SearchBar from "@/components/search-bar";
+import {hotelSearchResponseFromBackend} from "@/types/hotelType";
+import HotelCard from "@/components/HotelCard";
 
 export default function SearchPage() {
 
@@ -17,7 +19,7 @@ export default function SearchPage() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [results, setResults] = useState([]);
+    const [results, setResults] = useState<hotelSearchResponseFromBackend | undefined>(undefined);
 
     useEffect(() => {
 
@@ -42,7 +44,7 @@ export default function SearchPage() {
 
                 // Create query parameters string
                 const queryParams = new URLSearchParams({
-                    destination: searchParams.destination ,
+                    destination: searchParams.destination,
                     numAdults: searchParams.numAdults.toString(),
                     numChildren: searchParams.numChildren.toString(),
                     checkIn: searchParams.checkIn,
@@ -65,25 +67,32 @@ export default function SearchPage() {
 
     }, [search, page]); // Re-run effect if search or page changes
 
+    // TODO: NEED TO ADD FILTERS AND SORT BY DROPDOWN MENU 😈😈😈
+    //  ? INSTEAD OF LONG LIST OF FILTERS ADD AIRBNB STYLE ICONS - HOTEL TYPES
 
-    // ! ACCount for loading and error states later
+
+    // TODO: Add num adults and children to prisma schema
+    // ! ACCount for loading and error states  + WHenn no matches found later
+    // ! Implement pagination with shadCN
 
     return (
-        <div>
-            <h1>Search Page</h1>
-            {/*{loading && <p>Loading...</p>}*/}
-            {/*{error && <p>{error}</p>}*/}
-            {/*{!loading && !error && results.length === 0 && <p>No results found</p>}*/}
-            {/*<ul>*/}
-            {/*    {results.map((result, index) => (*/}
-            {/*        <li key={index}>{result.name}</li> // Adjust according to the actual structure of your results*/}
-            {/*    ))}*/}
-            {/*</ul>*/}
-            {/*/!* Pagination controls *!/*/}
-            {/*<div>*/}
-            {/*    <button disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</button>*/}
-            {/*    <button onClick={() => setPage(page + 1)}>Next</button>*/}
-            {/*</div>*/}
-        </div>
+
+        <>
+            <SearchBar/>
+
+            {/* RESULTS CARD SECTION */}
+            <div className="flex flex-col gap-5 w-5/6 mx-auto mt-10">
+                <div className="flex justify-between items-center">
+                <span className="text-xl font-bold">
+                    {`${results?.paginationInfo.totalHotels} Matches found`}
+                </span>
+                </div>
+                {results?.hotelsFound.map((hotel, idx) => (
+                    <HotelCard hotel={hotel} key={idx}/>
+                ))}
+            </div>
+
+
+        </>
     );
 }
