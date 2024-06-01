@@ -1,18 +1,16 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect} from "react";
 import SearchContext from "../../context/search-context";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarCheck } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { z } from "zod";
-import { Calendar } from "@/components/ui/calendar";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {CalendarCheck, Eraser, Search} from "lucide-react";
+import {Input} from "@/components/ui/input";
+import {z} from "zod";
+import {Calendar} from "@/components/ui/calendar";
 import {
     Form,
     FormControl,
     FormField,
-    FormItem,
-    FormLabel,
+    FormItem, FormLabel,
     FormMessage,
 } from "@/components/ui/form";
 import {
@@ -20,41 +18,48 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from "date-fns";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import {format} from "date-fns";
+import {Button} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
+import {useRouter} from "next/navigation";
+import {SearchSchema} from "@/schemas/searchValidation";
 
-const FormSchema = z.object({
-    destination: z.string().min(3, "Destination must have at least 3 letters"),
-    checkIn: z.date({
-        required_error: "A check-in date is required.",
-    }),
-    checkOut: z.date({
-        required_error: "A check-out date is required.",
-    }),
-    numAdults: z.number({
-        required_error: "The number of adults is required.",
-    }),
-    numChildren: z.number({
-        required_error: "The number of children is required.",
-    }),
-});
 
 export default function SearchBar() {
+
     const search = useContext(SearchContext);
 
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<z.infer<typeof SearchSchema>>({
+        resolver: zodResolver(SearchSchema),
     });
 
-    const [checkIn, setCheckIn] = React.useState<Date>(new Date(search.checkIn));
-    const [checkOut, setCheckOut] = React.useState<Date>(new Date(search.checkOut));
-    const [numAdults, setNumAdults] = React.useState<number>(search.numAdults);
-    const [numChildren, setNumChildren] = React.useState<number>(search.numChildren);
-    const [destination, setDestination] = React.useState<string>(search.destination);
+    const router = useRouter();
 
-    const onSubmit = (formData: z.infer<typeof FormSchema>) => {
-        search.saveSearch(checkIn, checkOut, numAdults, numChildren, destination, search.hotelId);
+    const [checkIn, setCheckIn] = React.useState<Date>(new Date());
+    const [checkOut, setCheckOut] = React.useState<Date>(new Date());
+    const [numAdults, setNumAdults] = React.useState<number>(1);
+    const [numChildren, setNumChildren] = React.useState<number>(0);
+    const [destination, setDestination] = React.useState<string>("");
+
+    useEffect(() => {
+        if (search) {
+            setCheckIn(new Date(search.checkIn));
+            setCheckOut(new Date(search.checkOut));
+            setNumAdults(search.numAdults);
+            setNumChildren(search.numChildren);
+            setDestination(search.destination);
+        }
+    }, [search]);
+
+    const minDate = new Date();
+    const maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1));  // 1 year from now
+
+    const onSubmit = (formData: z.infer<typeof SearchSchema>) => {
+
+        // *  this will save the search data to the context 😊😊😊
+        search?.saveSearch(checkIn, checkOut, numAdults, numChildren, destination, search.hotelId);
+
+        router.push("/search");
     };
 
     return (
@@ -68,14 +73,20 @@ export default function SearchBar() {
                     <FormField
                         control={form.control}
                         name="destination"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Destination</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
                                         type="text"
                                         placeholder="Destination"
                                         className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                        value={destination}
+                                        onChange={(e) => {
+                                            field.onChange(e);
+                                            setDestination(e.target.value);
+                                        }}
                                     />
                                 </FormControl>
                                 {form.formState.errors.destination && (
@@ -91,8 +102,9 @@ export default function SearchBar() {
                     <FormField
                         control={form.control}
                         name="checkIn"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Check-in</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <FormControl>
@@ -104,7 +116,7 @@ export default function SearchBar() {
                                                 )}
                                             >
                                                 {field.value ? format(field.value, "PPP") : <span>Check-in</span>}
-                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50"/>
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -114,16 +126,16 @@ export default function SearchBar() {
                                             selected={field.value}
                                             onSelect={(date) => {
                                                 field.onChange(date);
-                                                setCheckIn(date);
+                                                setCheckIn(date as Date);
                                             }}
                                             disabled={(date) =>
-                                                date < new Date() || date > new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                                                date < minDate || date > maxDate
                                             }
                                             initialFocus
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -132,8 +144,9 @@ export default function SearchBar() {
                     <FormField
                         control={form.control}
                         name="checkOut"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Check-out</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <FormControl>
@@ -145,7 +158,7 @@ export default function SearchBar() {
                                                 )}
                                             >
                                                 {field.value ? format(field.value, "PPP") : <span>Check-out</span>}
-                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50"/>
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -155,16 +168,16 @@ export default function SearchBar() {
                                             selected={field.value}
                                             onSelect={(date) => {
                                                 field.onChange(date);
-                                                setCheckOut(date);
+                                                setCheckOut(date as Date);
                                             }}
                                             disabled={(date) =>
-                                                date < checkIn || date > new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+                                                date < checkIn || date > maxDate
                                             }
                                             initialFocus
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage />
+                                <FormMessage/>
                             </FormItem>
                         )}
                     />
@@ -173,8 +186,9 @@ export default function SearchBar() {
                     <FormField
                         control={form.control}
                         name="numAdults"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Adults</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -183,6 +197,11 @@ export default function SearchBar() {
                                         max={30}
                                         placeholder="Adults"
                                         className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                        value={numAdults}
+                                        onChange={(e) => {
+                                            field.onChange(parseInt(e.target.value));
+                                            setNumAdults(parseInt(e.target.value));
+                                        }}
                                     />
                                 </FormControl>
                                 {form.formState.errors.numAdults && (
@@ -198,8 +217,9 @@ export default function SearchBar() {
                     <FormField
                         control={form.control}
                         name="numChildren"
-                        render={({ field }) => (
+                        render={({field}) => (
                             <FormItem className="flex flex-col">
+                                <FormLabel>Children</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
@@ -208,6 +228,11 @@ export default function SearchBar() {
                                         max={10}
                                         placeholder="Children"
                                         className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
+                                        value={numChildren}
+                                        onChange={(e) => {
+                                            field.onChange(parseInt(e.target.value));
+                                            setNumChildren(parseInt(e.target.value));
+                                        }}
                                     />
                                 </FormControl>
                                 {form.formState.errors.numChildren && (
@@ -218,6 +243,30 @@ export default function SearchBar() {
                             </FormItem>
                         )}
                     />
+
+                    <div className="flex justify-center gap-8 mt-6 lg:col-span-5">
+                        <Button size="sm" className="flex items-center justify-center" type="submit">
+                            <Search className="mr-4" size={20}/>
+                            Search
+                        </Button>
+
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex items-center justify-center"
+                            onClick={() => {
+                                form.reset();
+                                setCheckIn(new Date());
+                                setCheckOut(new Date());
+                                setNumAdults(1);
+                                setNumChildren(0);
+                                setDestination("");
+                            }}
+                        >
+                            <Eraser className="mr-4" size={20}/>
+                            Clear
+                        </Button>
+                    </div>
                 </form>
             </Form>
         </div>
