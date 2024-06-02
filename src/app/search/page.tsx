@@ -21,7 +21,6 @@ export default function SearchPage() {
     const [error, setError] = useState<string | null>(null);
     const [results, setResults] = useState<hotelSearchResponseFromBackend | undefined>(undefined);
 
-    //  ! INSTEAD OF LONG LIST OF FILTERS ADD AIRBNB STYLE ICONS - HOTEL TYPES
 
     useEffect(() => {
         if (!search) return;
@@ -33,7 +32,7 @@ export default function SearchPage() {
             numAdults: search.numAdults,
             numChildren: search.numChildren,
             page: page.toString(),
-            sortBy: sortBy,
+            sortBy: sortBy,  // Sorting parameter (starRatingDesc, pricePerNightAsc, pricePerNightDesc)
         };
 
         const searchHotels = async (searchParams: SearchParams) => {
