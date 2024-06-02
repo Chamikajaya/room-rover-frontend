@@ -35,6 +35,8 @@ export default function SearchPage() {
             sortBy: sortBy,  // Sorting parameter (starRatingDesc, pricePerNightAsc, pricePerNightDesc)
         };
 
+
+
         const searchHotels = async (searchParams: SearchParams) => {
             try {
                 setLoading(true);
@@ -46,7 +48,7 @@ export default function SearchPage() {
                     numChildren: (searchParams.numChildren || 0).toString(),
                     checkIn: searchParams.checkIn || "",
                     checkOut: searchParams.checkOut || "",
-                    sortBy: searchParams.sortBy || "",
+                    sortBy: searchParams.sortBy || "pricePerNightAsc",  // if no sortBy parameter is provided, default to pricePerNightAsc :)
                     page: searchParams.page || "1",
                 });
 
