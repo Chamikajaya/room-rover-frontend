@@ -24,6 +24,8 @@ export type HotelFormData = {
     facilities: string[];
     imageFiles: FileList;
     imageURLs: string[];
+    numAdults: number;
+    numChildren: number;
 
 };
 
@@ -54,13 +56,12 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
     }, [hotel, reset]);
 
     const onSubmit = handleSubmit(async (formData) => {
-        console.log(formData);
 
         try {
             setIsSubmitting(true);
 
             const formDataObj = new FormData();
-            console.log(hotel)
+            // console.log(hotel)
 
             // If hotel is present, append the hotelId to the formData
             if (hotel) {
@@ -73,6 +74,8 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
             formDataObj.append("description", formData.description);
             formDataObj.append("pricePerNight", formData.pricePerNight.toString());
             formDataObj.append("starRating", formData.starRating.toString());
+            formDataObj.append("numAdults", formData.numAdults.toString());
+            formDataObj.append("numChildren", formData.numChildren.toString());
             formDataObj.append("type", formData.type);
 
             formData.facilities.forEach((facility, index) => {
@@ -88,6 +91,7 @@ export default function AddHotelForm({hotel}: AddHotelFormProps) {
             Array.from(formData.imageFiles).forEach((imageFile) => {
                 formDataObj.append(`imageFiles`, imageFile);
             });
+
 
             // Check if hotel is present
             if (hotel) {

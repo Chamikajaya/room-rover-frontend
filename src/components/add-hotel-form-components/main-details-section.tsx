@@ -1,6 +1,6 @@
 import {useFormContext} from "react-hook-form";
 import {FormControl, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Home, MapPin, Map, NotepadText, DollarSign, Star} from "lucide-react";
+import {Home, MapPin, Map, NotepadText, DollarSign, Star, User, Baby} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {
@@ -101,7 +101,7 @@ export default function MainDetailsSection() {
                         rows={8}
                         {...register("description", {
                             required: "This field is required",
-                            minLength: { value: 3, message: "Description should be at least 500 characters" },  // ! Change later
+                            minLength: { value: 500, message: "Description should be at least 500 characters" },  // ! Change later
                             maxLength: { value: 5000, message: "Description should not exceed 5000 characters" }
                         })}
                         placeholder="describe about your hotel here"
@@ -110,6 +110,54 @@ export default function MainDetailsSection() {
                 {errors.description && <FormMessage
                     className="text-red-400 font-normal">{errors.description.message}</FormMessage>}
             </FormItem>
+
+            <div className="flex flex-col gap-3 md:flex-row md:gap-x-6">
+                <FormItem>
+                    <FormLabel className={"font-normal flex gap-2 items-center"}>
+                        Number of Adults
+                        <User/>
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            {...register("numAdults", {
+                                required: "This field is required",
+                                min: { value: 1, message: "Should be greater than 1" },
+                            })}
+                            type="number"
+                            placeholder="adults"
+                            className="max-w-[60%]"
+                        />
+                    </FormControl>
+                    {errors.pricePerNight && <FormMessage
+                        className="text-red-400 font-normal">{errors.pricePerNight.message}</FormMessage>}
+                </FormItem>
+
+                <FormItem>
+                    <FormLabel className={"font-normal flex gap-2 items-center"}>
+                        Number of Children
+                        <Baby/>
+                    </FormLabel>
+                    <FormControl>
+                        <Input
+                            {...register("numChildren", {
+                                required: "This field is required",
+                                min: { value: 0, message: "Should be 0 or higher" },
+                            })}
+                            type="number"
+                            placeholder="children"
+                            className="max-w-[60%]"
+                        />
+                    </FormControl>
+                    {errors.pricePerNight && <FormMessage
+                        className="text-red-400 font-normal">{errors.pricePerNight.message}</FormMessage>}
+                </FormItem>
+
+
+
+
+            </div>
+
+
 
             {/* PRICE PER NIGHT*/}
             <FormItem>

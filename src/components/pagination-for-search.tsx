@@ -14,24 +14,38 @@ interface PaginationForSearchProps {
     onPageChange: (page: number) => void;
 }
 
-export default function PaginationForSearch({totalPages, currentPage, onPageChange}: PaginationForSearchProps) {
+// TODO: FIX THE RENDERING ISSUE WHEN THERE IS ONLY ONE PAGE RESULTS
 
-    //  called whenever a page number or navigation button is clicked.
+export default function PaginationForSearch({ totalPages, currentPage, onPageChange }: PaginationForSearchProps) {
+
+    // Called whenever a page number or navigation button is clicked.
     const handlePageChange = (page: number) => {
-        // checks if the requested page number is within the valid range
+        // Checks if the requested page number is within the valid range
         if (page >= 1 && page <= totalPages!) {
-            onPageChange(page);  // calls the onPageChange callback function with the new page number. (Refer search page.tsx - This will update the state for the current page number)
+            onPageChange(page);  // Calls the onPageChange callback function with the new page number. (Refer search page.tsx - This will update the state for the current page number)
         }
     };
 
-    // renders the page numbers and ellipses based on the current page number and total number of pages.
+    // Renders the page numbers and ellipses based on the current page number and total number of pages.
     const renderPageNumbers = () => {
         if (!totalPages) return null;
 
-        const pages = [];  // array to store the page numbers and ellipses
+        const pages = [];  // Array to store the page numbers and ellipses
         const maxPageNumbers = 3; // Max number of page numbers to display before adding ellipses
 
-        // Add the first page -  first page number (1) is always added to the pages array.
+        if (totalPages === 1) {
+            // If there is only one page, render just one page number
+            pages.push(
+                <PaginationItem key={1}>
+                    <PaginationLink onClick={() => handlePageChange(1)} className={currentPage === 1 ? "active" : ""}>
+                        1
+                    </PaginationLink>
+                </PaginationItem>
+            );
+            return pages;
+        }
+
+        // Add the first page - first page number (1) is always added to the pages array.
         pages.push(
             <PaginationItem key={1}>
                 <PaginationLink onClick={() => handlePageChange(1)} className={currentPage === 1 ? "active" : ""}>
@@ -45,7 +59,7 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
             for (let i = 2; i <= totalPages - 1; i++) {
                 pages.push(
                     <PaginationItem key={i}>
-                        <PaginationLink href="#" onClick={() => handlePageChange(i)}
+                        <PaginationLink onClick={() => handlePageChange(i)}
                                         className={currentPage === i ? "active" : ""}>
                             {i}
                         </PaginationLink>
@@ -59,7 +73,7 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
                 // Add an ellipsis if currentPage is greater than 2
                 pages.push(
                     <PaginationItem key="start-ellipsis">
-                        <PaginationEllipsis/>
+                        <PaginationEllipsis />
                     </PaginationItem>
                 );
             }
@@ -70,7 +84,7 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
             for (let i = startPage; i <= endPage; i++) {
                 pages.push(
                     <PaginationItem key={i}>
-                        <PaginationLink href="#" onClick={() => handlePageChange(i)}
+                        <PaginationLink onClick={() => handlePageChange(i)}
                                         className={currentPage === i ? "active" : ""}>
                             {i}
                         </PaginationLink>
@@ -82,7 +96,7 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
                 // Add an ellipsis if currentPage is less than totalPages - 1
                 pages.push(
                     <PaginationItem key="end-ellipsis">
-                        <PaginationEllipsis/>
+                        <PaginationEllipsis />
                     </PaginationItem>
                 );
             }
@@ -91,7 +105,7 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
         // Add the last page
         pages.push(
             <PaginationItem key={totalPages}>
-                <PaginationLink href="#" onClick={() => handlePageChange(totalPages)}
+                <PaginationLink onClick={() => handlePageChange(totalPages)}
                                 className={currentPage === totalPages ? "active" : ""}>
                     {totalPages}
                 </PaginationLink>
@@ -106,14 +120,14 @@ export default function PaginationForSearch({totalPages, currentPage, onPageChan
             <PaginationContent>
                 <PaginationItem>
                     {currentPage !== 1 && (
-                        <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)}/>
+                        <PaginationPrevious onClick={() => handlePageChange(currentPage - 1)} />
                     )}
 
                 </PaginationItem>
                 {renderPageNumbers()}
                 <PaginationItem>
                     {currentPage !== totalPages && (
-                        <PaginationNext onClick={() => handlePageChange(currentPage + 1)}/>
+                        <PaginationNext onClick={() => handlePageChange(currentPage + 1)} />
                     )}
                 </PaginationItem>
             </PaginationContent>

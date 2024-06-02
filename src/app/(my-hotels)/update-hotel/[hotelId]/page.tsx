@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import AddHotelForm, {HotelFormData} from "@/components/add-hotel-form-components/add-hotel-form";
-import {Loader2} from "lucide-react";
 import MyLoader from "@/components/loader";
 
 export default function UpdateHotelPage() {
