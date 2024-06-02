@@ -1,4 +1,4 @@
-import {Star} from "lucide-react";
+import {ArrowDown, ArrowRight, Star} from "lucide-react";
 
 interface DescriptionProps {
     description: string
@@ -27,8 +27,9 @@ export default function Description({description, starRating, hotelType}: Descri
                         </span>
             </div>
 
-            <span className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            <span className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-4">
                 About
+                <ArrowDown/>
             </span>
            <div className={"mt-4"}>
                {formatDescription(description).map((sentence, idx) => (

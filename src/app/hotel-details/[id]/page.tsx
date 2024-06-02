@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import ImageCarousel from "@/components/hotel-details-page-components/image-carousel";
 import DetailsPageHeader from "@/components/hotel-details-page-components/details-page-header";
 import Description from "@/components/hotel-details-page-components/description";
+import FacilitiesDetails from "@/components/hotel-details-page-components/facilities-details";
 
 export default function HotelDetailsPage() {
     const { id } = useParams();
@@ -23,6 +24,7 @@ export default function HotelDetailsPage() {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${hotelId}`);
             setHotel(response.data);
         } catch (e) {
+            // @ts-ignore
             const errorMessage = e.response?.data?.errorMessage || e.message || "Something went wrong";
             setError(errorMessage);
             toast.error(errorMessage);
@@ -50,6 +52,7 @@ export default function HotelDetailsPage() {
         <div className="flex m-4 items-center justify-center flex-col mt-8">
             <DetailsPageHeader name={hotel?.name as string} city={hotel?.city as string} country={hotel?.country as string} />
             <ImageCarousel images={hotel?.imageURLs as string[] || []} />
+            <FacilitiesDetails facilities={hotel?.facilities as string[]} />
             <Description description={hotel?.description as string} starRating={hotel?.starRating as number} hotelType={hotel?.type as string} />
         </div>
     );

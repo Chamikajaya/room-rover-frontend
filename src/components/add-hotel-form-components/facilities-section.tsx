@@ -35,7 +35,7 @@ export default function HotelFacilitiesForm() {
                                 <div className="grid grid-cols-3 gap-4">
                                     {hotelFacilities.map((facility) => (
                                         <FormField
-                                            key={facility.id}
+                                            key={facility.label}
                                             control={control}
                                             name="facilities"
                                             render={({field}) => {
@@ -47,11 +47,11 @@ export default function HotelFacilitiesForm() {
                                                                 {...register("facilities", {
                                                                     required: "You must select one or more facilities",
                                                                 })}
-                                                                checked={valueArray.includes(facility.id)}
+                                                                checked={valueArray.includes(facility.label)}
                                                                 onCheckedChange={(checked) => {
                                                                     return checked
-                                                                        ? field.onChange([...valueArray, facility.id])
-                                                                        : field.onChange(valueArray.filter(value => value !== facility.id))
+                                                                        ? field.onChange([...valueArray, facility.label])
+                                                                        : field.onChange(valueArray.filter(value => value !== facility.label))
                                                                 }}
                                                             />
 
