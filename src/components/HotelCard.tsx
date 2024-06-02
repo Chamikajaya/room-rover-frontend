@@ -10,7 +10,7 @@ interface HotelCardProps {
 
 export default function HotelCard({ hotel }: HotelCardProps) {
     return (
-        <div className="mt-8 p-6 border border-primary rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:border-gray-700 grid grid-cols-1 xl:grid-cols-[2fr_3fr] gap-8 transition-transform transform hover:scale-105">
+        <div className="mt-8 p-6 border border-primary rounded-lg shadow-lg bg-white dark:bg-gray-800 dark:border-gray-700 grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 transition-transform transform hover:scale-105">
 
             {/* IMAGE COL */}
             <div className="w-full h-64 relative rounded-lg overflow-hidden">
@@ -20,7 +20,7 @@ export default function HotelCard({ hotel }: HotelCardProps) {
                     layout="fill"
                     objectFit="cover"
                     objectPosition="center"
-                    className="transition-transform transform hover:scale-110"
+                    className="transition-transform transform hover:scale-105"
                 />
             </div>
 

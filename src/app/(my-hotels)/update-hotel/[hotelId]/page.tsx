@@ -6,6 +6,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import AddHotelForm, {HotelFormData} from "@/components/add-hotel-form-components/add-hotel-form";
 import {Loader2} from "lucide-react";
+import MyLoader from "@/components/loader";
 
 export default function UpdateHotelPage() {
     const {hotelId} = useParams();
@@ -40,23 +41,19 @@ export default function UpdateHotelPage() {
         }
     }, [hotelId]);
 
-    console.log(hotel)
-
     if (loading) {
         return (
-            <div className={"flex justify-center items-center my-20"}>
-                <Loader2 className={"animate-spin"} size={80} />
-            </div>
+            <MyLoader/>
         )
-    }
 
+    }
     if (error) {
         return <div>{error}</div>;
     }
 
     return (
         <div className="flex m-4 items-center justify-center">
-            <AddHotelForm hotel={hotel} />
+            <AddHotelForm hotel={hotel}/>
         </div>
     );
 }
