@@ -1,29 +1,27 @@
 "use client";
 
-import SearchContext from "../../../context/search-context";
 import {useContext, useState, useEffect} from "react";
 import axios from "axios";
-
-import {SearchParams} from "@/types/searchParamsTypes";
 import toast from "react-hot-toast";
-import SearchBar from "@/components/search-bar";
+import SearchContext from "../../../context/search-context";
+import {SearchParams} from "@/types/searchParamsTypes";
 import {hotelSearchResponseFromBackend} from "@/types/hotelType";
+import SearchBar from "@/components/search-bar";
 import HotelCard from "@/components/HotelCard";
 import PaginationForSearch from "@/components/pagination-for-search";
 import MyLoader from "@/components/loader";
+import ResultsSortDropdown from "@/components/results-sort-dropdown";
 
 export default function SearchPage() {
-
     const search = useContext(SearchContext);
 
     const [page, setPage] = useState(1);  // for pagination purposes (tracking the current page number)
-
+    const [sortBy, setSortBy] = useState<string | undefined>(undefined);  // for sorting purposes
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [results, setResults] = useState<hotelSearchResponseFromBackend | undefined>(undefined);
 
     //  ! INSTEAD OF LONG LIST OF FILTERS ADD AIRBNB STYLE ICONS - HOTEL TYPES
-
 
     useEffect(() => {
         if (!search) return;
@@ -34,7 +32,8 @@ export default function SearchPage() {
             checkOut: search.checkOut.toISOString(),
             numAdults: search.numAdults,
             numChildren: search.numChildren,
-            page: page.toString()
+            page: page.toString(),
+            sortBy: sortBy,
         };
 
         const searchHotels = async (searchParams: SearchParams) => {
@@ -43,12 +42,13 @@ export default function SearchPage() {
                 setError(null);
 
                 const queryParams = new URLSearchParams({
-                    destination: searchParams.destination,
-                    numAdults: searchParams.numAdults.toString(),
-                    numChildren: searchParams.numChildren.toString(),
-                    checkIn: searchParams.checkIn,
-                    checkOut: searchParams.checkOut,
-                    page: searchParams.page
+                    destination: searchParams.destination || "",
+                    numAdults: (searchParams.numAdults || 0).toString(),
+                    numChildren: (searchParams.numChildren || 0).toString(),
+                    checkIn: searchParams.checkIn || "",
+                    checkOut: searchParams.checkOut || "",
+                    sortBy: searchParams.sortBy || "",
+                    page: searchParams.page || "1",
                 });
 
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/search?${queryParams}`);
@@ -57,24 +57,27 @@ export default function SearchPage() {
             } catch (err) {
                 console.log("ERROR - HOTELS SEARCH @GET --> " + err);
                 toast.error("Something went wrong");
-                setError("Something went wrong")
+                setError("Something went wrong");
             } finally {
                 setLoading(false);
             }
         };
 
         searchHotels(searchParams);
-    }, [search, page]);  // Re-run effect if search or page changes :)
+    }, [search, page, sortBy]);  // Re-run effect if search, page, or sortBy changes :)
 
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
+    };
+
+    const handleSortChange = (newSortBy: string) => {  // Callback function to handle sort change (refer to results-sort-dropdown.tsx 👈)
+        setSortBy(newSortBy);
     };
 
     if (loading) {
         return (
             <MyLoader/>
         )
-
     }
 
     if (error) {
@@ -95,6 +98,7 @@ export default function SearchPage() {
                     <span className="text-xl font-bold">
                         {`${results?.paginationInfo.totalHotels} Matches found`}
                     </span>
+                    <ResultsSortDropdown onSortChange={handleSortChange}/>
                 </div>
                 {results?.hotelsFound.map((hotel, idx) => (
                     <HotelCard hotel={hotel} key={idx}/>

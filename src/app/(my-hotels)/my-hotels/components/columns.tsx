@@ -12,7 +12,7 @@ export type HotelCol = {
     pricePerNight: number
     starRating: number
     type: string
-    updatedAt: string  // ! Change this to updated at later + in the formattedObj as well
+    updatedAt: string
 }
 
 export const columns: ColumnDef<HotelCol>[] = [
@@ -22,14 +22,14 @@ export const columns: ColumnDef<HotelCol>[] = [
     },
     {
         accessorKey: "updatedAt",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Last Updated
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             )
         },
