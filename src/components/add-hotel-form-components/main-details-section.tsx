@@ -101,8 +101,8 @@ export default function MainDetailsSection() {
                         rows={8}
                         {...register("description", {
                             required: "This field is required",
-                            minLength: { value: 500, message: "Description should be at least 500 characters" },  // ! Change later
-                            maxLength: { value: 5000, message: "Description should not exceed 5000 characters" }
+                            minLength: {value: 500, message: "Description should be at least 500 characters"},  // ! Change later
+                            maxLength: {value: 5000, message: "Description should not exceed 5000 characters"}
                         })}
                         placeholder="describe about your hotel here"
                     />
@@ -111,37 +111,38 @@ export default function MainDetailsSection() {
                     className="text-red-400 font-normal">{errors.description.message}</FormMessage>}
             </FormItem>
 
+            {/*GUEST COUNT SECTION*/}
             <div className="flex flex-col gap-3 md:flex-row md:gap-x-6">
                 <FormItem>
                     <FormLabel className={"font-normal flex gap-2 items-center"}>
-                        Number of Adults
+                       Adults
                         <User/>
                     </FormLabel>
                     <FormControl>
                         <Input
                             {...register("numAdults", {
                                 required: "This field is required",
-                                min: { value: 1, message: "Should be greater than 1" },
+                                min: {value: 1, message: "Number of adults must be a positive number"},
                             })}
                             type="number"
                             placeholder="adults"
                             className="max-w-[60%]"
                         />
                     </FormControl>
-                    {errors.pricePerNight && <FormMessage
-                        className="text-red-400 font-normal">{errors.pricePerNight.message}</FormMessage>}
+                    {errors.numAdults && <FormMessage
+                        className="text-red-400 font-normal">{errors.numAdults.message}</FormMessage>}
                 </FormItem>
 
                 <FormItem>
                     <FormLabel className={"font-normal flex gap-2 items-center"}>
-                        Number of Children
+                        Children
                         <Baby/>
                     </FormLabel>
                     <FormControl>
                         <Input
                             {...register("numChildren", {
                                 required: "This field is required",
-                                min: { value: 0, message: "Should be 0 or higher" },
+                                min: {value: 0, message: "Number of children must be either 0 or high"},
                             })}
                             type="number"
                             placeholder="children"
@@ -153,10 +154,7 @@ export default function MainDetailsSection() {
                 </FormItem>
 
 
-
-
             </div>
-
 
 
             {/* PRICE PER NIGHT*/}
@@ -169,7 +167,7 @@ export default function MainDetailsSection() {
                     <Input
                         {...register("pricePerNight", {
                             required: "This field is required",
-                            min: { value: 1, message: "Price must be a positive number" },
+                            min: {value: 1, message: "Price must be a positive number"},
                         })}
                         type="number"
                         placeholder="price per night"
