@@ -5,6 +5,7 @@ import AuthContext from "../../context/auth-context";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import LogoutButton from "@/components/auth-components/logout-btn";
+import {AlertModal} from "@/components/ui/alert-modal";
 
 export default function NavbarButtons() {
     // @ts-ignore
@@ -15,6 +16,7 @@ export default function NavbarButtons() {
         <>
             {isAuthenticated ? (
                 <>
+
                     <Link href={"/"}>
                         <Button
                             className={"font-semibold hover:text-primary hover:bg-secondary"}

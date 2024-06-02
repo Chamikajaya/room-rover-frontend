@@ -28,6 +28,9 @@ export default function CellAction({data}: CellActionProps) {
     const router = useRouter();
 
     const onDelete = async () => {
+
+        console.log(data.id)
+
         try {
             setLoading(true);
             await axios.delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/my-hotels/${data.id}`, {withCredentials: true});
@@ -46,6 +49,8 @@ export default function CellAction({data}: CellActionProps) {
         <>
             <AlertModal
                 isOpen={open}
+                title={"Are you sure you want to delete this hotel?"}
+                description={"This action cannot be undone."}
                 onClose={() => setOpen(false)}
                 onConfirm={onDelete}
                 loading={loading}

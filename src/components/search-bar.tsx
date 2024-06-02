@@ -193,8 +193,7 @@ export default function SearchBar() {
                                     <Input
                                         {...field}
                                         type="number"
-                                        min={1}
-                                        max={30}
+
                                         placeholder="Adults"
                                         className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
                                         value={numAdults}
@@ -225,7 +224,6 @@ export default function SearchBar() {
                                         {...field}
                                         type="number"
                                         min={0}
-                                        max={10}
                                         placeholder="Children"
                                         className="w-full bg-gray-800 text-white border-0 focus:ring-2 focus:ring-purple-500"
                                         value={numChildren}
