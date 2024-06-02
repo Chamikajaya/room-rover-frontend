@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import ImageCarousel from "@/components/hotel-details-page-components/image-carousel";
+import DetailsPageHeader from "@/components/hotel-details-page-components/details-page-header";
+import Description from "@/components/hotel-details-page-components/description";
 
 export default function HotelDetailsPage() {
     const { id } = useParams();
@@ -42,10 +44,13 @@ export default function HotelDetailsPage() {
 
     if (error) return <h1>{error}</h1>;
 
+
+
     return (
-        <div className="flex m-4 items-center justify-center">
-            <ImageCarousel images={hotel?.imageURLs as string[] || []}/>
-            {/*<h1>{hotel?.name}</h1>*/}
+        <div className="flex m-4 items-center justify-center flex-col mt-8">
+            <DetailsPageHeader name={hotel?.name as string} city={hotel?.city as string} country={hotel?.country as string} />
+            <ImageCarousel images={hotel?.imageURLs as string[] || []} />
+            <Description description={hotel?.description as string} starRating={hotel?.starRating as number} hotelType={hotel?.type as string} />
         </div>
     );
 }
