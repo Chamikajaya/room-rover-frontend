@@ -23,8 +23,9 @@ import { useRouter, useSearchParams } from "next/navigation"; // Import useRoute
 
 export default function SignInForm() {
   const router = useRouter();
+
   const searchParams = useSearchParams();
-  const returnUrl = searchParams.get("returnUrl") || "/";
+  const returnUrl = searchParams.get("returnUrl") || "/";  // if returnUrl is not provided, redirect to the home page else I am taking the user back to the hotel details page which he was trying to book before logging in. 😈😈😈
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formErrMsg, setFormErrMsg] = useState("");
