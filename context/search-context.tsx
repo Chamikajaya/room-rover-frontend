@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext } from "react";
+import React, {createContext} from "react";
 
 interface SearchProviderProps {
     children: React.ReactNode;
@@ -18,7 +18,7 @@ type SearchContext = {
 
 const SearchContext = createContext<SearchContext | undefined>(undefined);
 
-export function SearchProvider({ children }: SearchProviderProps) {
+export function SearchProvider({children}: SearchProviderProps) {
     const [checkIn, setCheckIn] = React.useState<Date>(new Date());
     const [checkOut, setCheckOut] = React.useState<Date>(new Date());
     const [numAdults, setNumAdults] = React.useState<number>(1);
@@ -32,11 +32,12 @@ export function SearchProvider({ children }: SearchProviderProps) {
         setNumAdults(numAdults);
         setNumChildren(numChildren);
         setDestination(destination);
-        setHotelId(hotelId);
+        if (hotelId) setHotelId(hotelId);
+
     };
 
     return (
-        <SearchContext.Provider value={{ checkIn, checkOut, numAdults, numChildren, destination, hotelId, saveSearch }}>
+        <SearchContext.Provider value={{checkIn, checkOut, numAdults, numChildren, destination, hotelId, saveSearch}}>
             {children}
         </SearchContext.Provider>
     );
