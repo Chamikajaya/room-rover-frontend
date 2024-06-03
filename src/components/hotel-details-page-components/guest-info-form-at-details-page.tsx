@@ -33,10 +33,13 @@ interface GuestInfoFormAtDetailsPageProps {
 }
 
 // TODO: FIX FOLLOWING ERRORS
-// ERROR MESSAGES (VALIDATION) for checkIn, checkOut, are not displayed
+// ERROR MESSAGES (VALIDATION) for checkIn, checkOut, are not displayed, for numChildren and adults they are  displayed properly
 // Calender displays dates even before the checkIn date for checkout date pick
 // Check-in date must be before check-out date error is not displayed
-//
+
+
+
+
 export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetailsPageProps) {
 
     const router = useRouter();
