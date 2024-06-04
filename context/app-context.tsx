@@ -3,25 +3,30 @@
 import React, {createContext, useEffect, useState} from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {loadStripe, Stripe} from "@stripe/stripe-js";
 
-interface authProviderProps {
+
+interface appProviderProps {
     children: React.ReactNode;
 }
 
 
-type AuthContext = {
+type AppContext = {
     isAuthenticated: boolean;
     checkAuth: () => void;
     user: {
         userId: string
     } | null;   // User object containing userId or null if not authenticated
+    stripePromise: Promise<Stripe | null>;
 };
 
-// Creating the AuthContext with the defined type
-const AuthContext = createContext<AuthContext | undefined>(undefined);
+// Creating the AppContext with the defined type
+const AppContext = createContext<AppContext | undefined>(undefined);
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
 
 
-export function AuthProvider({children}: authProviderProps) {
+export function AppProvider({children}: appProviderProps) {
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState(null);
@@ -62,12 +67,12 @@ export function AuthProvider({children}: authProviderProps) {
     }, []);
 
     return (
-        // This makes the isAuthenticated, checkAuth, and user values available to any component that consumes the AuthContext. ==>
-        <AuthContext.Provider value={{isAuthenticated, checkAuth, user}}>
+        // This makes the isAuthenticated, checkAuth, and user values available to any component that consumes the AppContext. ==>
+        <AppContext.Provider value={{isAuthenticated, checkAuth, user, stripePromise}}>
             {children}
-        </AuthContext.Provider>
+        </AppContext.Provider>
     )
 }
 
-export default AuthContext;
+export default AppContext;
 

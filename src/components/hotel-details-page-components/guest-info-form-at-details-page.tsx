@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import React, { useContext } from "react";
-import AuthContext from "../../../context/auth-context";
+import AuthContext from "../../../context/app-context";
 import { useRouter } from "next/navigation";
 import SearchContext from "../../../context/search-context";
 import { useForm } from "react-hook-form";

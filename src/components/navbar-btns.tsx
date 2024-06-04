@@ -1,14 +1,14 @@
 "use client";
 
 import { useContext } from "react";
-import AuthContext from "../../context/auth-context";
+import AppContext from "../../context/app-context";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/auth-components/logout-btn";
 
 export default function NavbarButtons() {
   // @ts-ignore
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AppContext);
 
   return (
     <>

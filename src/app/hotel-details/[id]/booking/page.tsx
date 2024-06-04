@@ -10,6 +10,7 @@ import {useParams} from "next/navigation";
 import BookingSummary from "@/components/booking-form-components/booking-summary";
 import {hotelType} from "@/types/hotelType";
 import {userType} from "@/types/userType";
+import {paymentIntentResponseFromBackend} from "@/types/paymentIntentResponse";
 
 export default function BookingConfirmation() {
 
@@ -22,8 +23,11 @@ export default function BookingConfirmation() {
     const [hotel, setHotel] = useState<hotelType | null>(null);
     const [nights, setNights] = useState(0);
     const [currUser, setCurrUser] = useState<userType | null>(null);
+
+    const [paymentIntent, setPaymentIntent] = useState<paymentIntentResponseFromBackend | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
 
     // fetching the hotel details to be displayed in the booking summary section
     useEffect(() => {
@@ -81,6 +85,35 @@ export default function BookingConfirmation() {
             setNights(diffDays);
         }
     }, [search?.checkIn, search?.checkOut]);
+
+
+    // ! ISSUE THIS RUNS INDEFINITELY
+    const createStripePaymentIntent = async (nights: number) => {
+        try {
+            const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}/bookings/payment-intent`,
+                {nights: nights},
+                {withCredentials: true}
+            );
+
+            if (response.status === 200) {
+                setPaymentIntent(response.data);
+            }
+
+            console.log(response.data);
+        } catch (e) {
+            console.error(e);
+            toast.error("Something went wrong");
+        }
+    };
+
+    // We want the effect to run only if the nights and hotel values are set, so we include them in the dependency array. This ensures that the effect runs only when the nights and hotel values are updated.
+    useEffect(() => {
+        if (nights > 0 && hotel) {
+            createStripePaymentIntent(nights);
+        }
+    }, [createStripePaymentIntent, hotel, nights]);
+
 
     if (loading) return <MyLoader/>;
     if (error) return <h1>{error}</h1>;

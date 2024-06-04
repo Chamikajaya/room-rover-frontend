@@ -1,15 +1,13 @@
 import type {Metadata} from "next";
-import {Roboto} from "next/font/google";
 import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/theme-provider";
 import Header from "@/components/header";
 import ToasterProvider from "@/components/toast-provider";
 import Footer from "@/components/footer";
-import {AuthProvider} from "../../context/auth-context";
+import {AppProvider} from "../../context/app-context";
 import {SearchProvider} from "../../context/search-context";
 
-const roboto = Roboto({weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: "RoomRover",
@@ -21,10 +19,12 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+
     return (
         <html lang="en">
         <body>
-        <AuthProvider>
+        <AppProvider>
             <SearchProvider>
                 <ToasterProvider/>
                 <ThemeProvider
@@ -36,13 +36,15 @@ export default function RootLayout({
                     <div className="flex flex-col min-h-screen">
                         <main className={"flex-grow"}>
                             <Header/>
+
                             {children}
+
                             <Footer/>
                         </main>
                     </div>
                 </ThemeProvider>
             </SearchProvider>
-        </AuthProvider>
+        </AppProvider>
         </body>
         </html>
     );
