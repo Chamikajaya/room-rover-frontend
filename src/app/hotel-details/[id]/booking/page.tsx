@@ -11,11 +11,16 @@ import BookingSummary from "@/components/booking-form-components/booking-summary
 import {hotelType} from "@/types/hotelType";
 import {userType} from "@/types/userType";
 import {paymentIntentResponseFromBackend} from "@/types/paymentIntentResponse";
+import {Elements} from "@stripe/react-stripe-js";
+import appContext from "../../../../../context/app-context";
 
 export default function BookingConfirmation() {
 
     const search = useContext(SearchContext);
     const {id} = useParams();
+
+    const {stripePromise} = useContext(appContext)
+
 
     const [hotel, setHotel] = useState<hotelType | null>(null);  // need to store hotel in a state because we need to pass the hotel to BookingSummary component
 
@@ -94,7 +99,7 @@ export default function BookingConfirmation() {
         }
     }, [hotel, nights, id]);
 
-    console.log("paymentIntent", paymentIntent)
+    // console.log("paymentIntent", paymentIntent)
 
     if (loading) return <MyLoader />;
     if (error) return <h1>{error}</h1>;
@@ -114,7 +119,11 @@ export default function BookingConfirmation() {
                 )}
             </div>
             <div className="p-4 bg-gray-800 rounded-lg shadow-md flex items-center justify-center">
-                {currUser && <BookingForm currUser={currUser} />}
+                {currUser && paymentIntent && (
+                    <Elements stripe={stripePromise} options={{clientSecret:paymentIntent.clientSecret}} >
+                        <BookingForm currUser={currUser}  paymentIntent={paymentIntent}/>
+                    </Elements>
+                )}
             </div>
         </div>
     );

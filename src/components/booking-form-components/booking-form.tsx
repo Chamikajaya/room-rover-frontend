@@ -5,12 +5,17 @@ import {Mail, User} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import CardWrapper from "@/components/auth-components/card-wrapper";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import toast from "react-hot-toast";
+import {paymentIntentResponseFromBackend} from "@/types/paymentIntentResponse";
+import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
+import axios from "axios";
 
 
 interface BookingFormProps {
     currUser: userType
+    paymentIntent: paymentIntentResponseFromBackend
+
 }
 
 export type  bookingValidation = {
@@ -19,7 +24,11 @@ export type  bookingValidation = {
     email: string;
 }
 
-export default function BookingForm({currUser}: BookingFormProps) {
+export default function BookingForm({currUser, paymentIntent}: BookingFormProps) {
+
+    const stripe = useStripe();
+    const elements = useElements();
+
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,11 +42,12 @@ export default function BookingForm({currUser}: BookingFormProps) {
     })
 
 
-    // ! CHANGE TYPE ARG LATER for onSubmit function
     const onSubmit = async (formData: bookingValidation) => {
         try {
             setIsSubmitting(true);
-            console.log(formData);
+
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${paymentIntent.hotelId}/bookings`, {);
+
         } catch (e) {
             console.log(e);
             toast.error("Something went wrong");
@@ -45,6 +55,8 @@ export default function BookingForm({currUser}: BookingFormProps) {
             setIsSubmitting(false);
         }
     }
+
+
 
 
     return (
@@ -125,6 +137,26 @@ export default function BookingForm({currUser}: BookingFormProps) {
                                 </FormItem>
                             )}
                         />
+
+                        {/*    STRIPE RELATED  */}
+                        <div className="space-y-2">
+                            <h2 className="text-xl font-semibold">Net Amount</h2>
+
+                            <div className="bg-gray-800 p-4 rounded-md">
+                                <div className="font-semibold text-lg text-pretty">
+                                    Total Cost: ${paymentIntent.totalAmount.toFixed(2)}
+                                </div>
+                                <div className="text-xs">Includes taxes and charges</div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-semibold"> Payment Details</h3>
+                            <CardElement
+                                id="payment-element"
+                                className=" p-2 text-sm border rounded-md shadow-lg shadow-gray-800"
+                            />
+                        </div>
 
                     </div>
 
