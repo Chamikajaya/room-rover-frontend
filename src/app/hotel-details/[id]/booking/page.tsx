@@ -14,31 +14,47 @@ import {paymentIntentResponseFromBackend} from "@/types/paymentIntentResponse";
 
 export default function BookingConfirmation() {
 
-
     const search = useContext(SearchContext);
-
-    // extracting the hotelID from the URL since we need it to fetch the hotel details
     const {id} = useParams();
 
-    const [hotel, setHotel] = useState<hotelType | null>(null);
+    const [hotel, setHotel] = useState<hotelType | null>(null);  // need to store hotel in a state because we need to pass the hotel to BookingSummary component
+
     const [nights, setNights] = useState(0);
+
+    // need to store currUser in a state because we need to pass the hotel to BookingForm component
     const [currUser, setCurrUser] = useState<userType | null>(null);
 
     const [paymentIntent, setPaymentIntent] = useState<paymentIntentResponseFromBackend | undefined>(undefined);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-
-    // fetching the hotel details to be displayed in the booking summary section
+    // Fetch hotel and user details, and calculate nights
     useEffect(() => {
-        const fetchHotel = async () => {
+        const fetchDetails = async () => {
+
+            console.log("UseEffect - FetchDetails is running")
             try {
                 setLoading(true);
-                const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}`,
-                    {withCredentials: true}
-                );
-                setHotel(response.data);
+
+                // Using Promise.all to fetch hotel details and user details simultaneously.
+                // *  Promise.all takes an array of promises and returns a single promise that resolves when ALL the input promises have resolved.
+                // * PARALLEL FETCHING - The two requests are made in parallel, which can be more efficient than making them sequentially.
+
+                const [hotelResponse, userResponse] = await Promise.all([
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}`, {withCredentials: true}),
+                    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`, {withCredentials: true}),
+                ]);
+
+                // setting the state once both promises have resolved
+                setHotel(hotelResponse.data);
+                setCurrUser(userResponse.data);
+
+                if (search?.checkIn && search?.checkOut) {
+                    const diffTime = Math.abs(search.checkOut.getTime() - search.checkIn.getTime());
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    setNights(diffDays);
+                }
             } catch (e) {
                 console.error(e);
                 setError("Something went wrong. Please try again later.");
@@ -48,74 +64,39 @@ export default function BookingConfirmation() {
             }
         };
 
-        fetchHotel();
-    }, [id]);
+        fetchDetails();
+    }, [id, search?.checkIn, search?.checkOut]);
 
-
-// fetching the current user details to be displayed in the booking form section
+    // Create Stripe payment intent
     useEffect(() => {
-        const fetchCurrUser = async () => {
+
+        console.log("UseEffect - CreateStripePaymentIntent is running")
+        const createStripePaymentIntent = async () => {
             try {
-                setLoading(true);
-                const response = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`,
+                const response = await axios.post(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}/bookings/payment-intent`,
+                    {nights},
                     {withCredentials: true}
                 );
-                setCurrUser(response.data);
+
+                if (response.status === 200) {
+                    setPaymentIntent(response.data);
+                }
             } catch (e) {
                 console.error(e);
-                setError("Something went wrong. Please try again later.");
                 toast.error("Something went wrong");
-            } finally {
-                setLoading(false);
             }
         };
 
-        fetchCurrUser();
-    }, []);
-
-    // calculating the number of nights based on the check-in and check-out dates selected by the user
-    // useEffect is used here is to ensure that the number of nights is recalculated and the state is updated whenever the check-in or check-out date changes. Without useEffect, the number of nights would only be calculated once when the component is first rendered, and would not update if the dates change.
-    useEffect(() => {
-
-        // checking if both check-in and check-out dates are defined
-        if (search?.checkIn && search?.checkOut) {
-            const diffTime = Math.abs(search.checkOut.getTime() - search.checkIn.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            setNights(diffDays);
-        }
-    }, [search?.checkIn, search?.checkOut]);
-
-
-    // ! ISSUE THIS RUNS INDEFINITELY
-    const createStripePaymentIntent = async (nights: number) => {
-        try {
-            const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}/bookings/payment-intent`,
-                {nights: nights},
-                {withCredentials: true}
-            );
-
-            if (response.status === 200) {
-                setPaymentIntent(response.data);
-            }
-
-            console.log(response.data);
-        } catch (e) {
-            console.error(e);
-            toast.error("Something went wrong");
-        }
-    };
-
-    // We want the effect to run only if the nights and hotel values are set, so we include them in the dependency array. This ensures that the effect runs only when the nights and hotel values are updated.
-    useEffect(() => {
+        // Only create the payment intent if the number of nights is greater than 0 and the hotel details are available.
         if (nights > 0 && hotel) {
-            createStripePaymentIntent(nights);
+            createStripePaymentIntent();
         }
-    }, [createStripePaymentIntent, hotel, nights]);
+    }, [hotel, nights, id]);
 
+    console.log("paymentIntent", paymentIntent)
 
-    if (loading) return <MyLoader/>;
+    if (loading) return <MyLoader />;
     if (error) return <h1>{error}</h1>;
 
     return (
@@ -133,7 +114,7 @@ export default function BookingConfirmation() {
                 )}
             </div>
             <div className="p-4 bg-gray-800 rounded-lg shadow-md flex items-center justify-center">
-                {currUser && <BookingForm currUser={currUser}/>}
+                {currUser && <BookingForm currUser={currUser} />}
             </div>
         </div>
     );

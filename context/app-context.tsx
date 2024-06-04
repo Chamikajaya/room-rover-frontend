@@ -5,11 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {loadStripe, Stripe} from "@stripe/stripe-js";
 
-
 interface appProviderProps {
     children: React.ReactNode;
 }
-
 
 type AppContext = {
     isAuthenticated: boolean;
@@ -23,8 +21,14 @@ type AppContext = {
 // Creating the AppContext with the defined type
 const AppContext = createContext<AppContext | undefined>(undefined);
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
+const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string;
+console.log("Stripe API Key:", stripePublicKey);
 
+if (!stripePublicKey) {
+    throw new Error("Missing Stripe API key");
+}
+
+const stripePromise = loadStripe(stripePublicKey);
 
 export function AppProvider({children}: appProviderProps) {
 
@@ -33,14 +37,11 @@ export function AppProvider({children}: appProviderProps) {
 
     // Function to check authentication status by making a request to the server
     const checkAuth = async () => {
-
         try {
             const response = await axios.get(
                 `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/validate-token`,
                 {withCredentials: true}  // Ensuring cookies are sent with the request
             );
-
-            // console.log(response.data);
 
             // If response is successful, update state to reflect authentication status
             if (response.status === 200) {
@@ -52,22 +53,20 @@ export function AppProvider({children}: appProviderProps) {
                 setUser(null);
                 toast.error("Authentication failed");
             }
-
         } catch (e) {
             console.error("AUTH PROVIDER --> " + e);
             setIsAuthenticated(false);
             setUser(null);
-
         }
-    }
+    };
 
-    // Check authentication status on component mount , ensuring the authentication status is checked as soon as the component is rendered.
+    // Check authentication status on component mount
     useEffect(() => {
         checkAuth();
     }, []);
 
     return (
-        // This makes the isAuthenticated, checkAuth, and user values available to any component that consumes the AppContext. ==>
+        // This makes the isAuthenticated, checkAuth, and user values available to any component that consumes the AppContext.
         <AppContext.Provider value={{isAuthenticated, checkAuth, user, stripePromise}}>
             {children}
         </AppContext.Provider>
@@ -75,4 +74,3 @@ export function AppProvider({children}: appProviderProps) {
 }
 
 export default AppContext;
-
