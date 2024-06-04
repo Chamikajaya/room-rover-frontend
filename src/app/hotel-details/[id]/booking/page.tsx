@@ -2,128 +2,106 @@
 
 import React, {useContext, useEffect, useState} from "react";
 import SearchContext from "../../../../../context/search-context";
-import {userType} from "@/types/userType";
 import toast from "react-hot-toast";
 import axios from "axios";
 import MyLoader from "@/components/loader";
 import BookingForm from "@/components/booking-form-components/booking-form";
 import {useParams} from "next/navigation";
-import {hotelType} from "@/types/hotelType";
 import BookingSummary from "@/components/booking-form-components/booking-summary";
+import {hotelType} from "@/types/hotelType";
+import {userType} from "@/types/userType";
 
 export default function BookingConfirmation() {
 
-    // TODO: ORGANIZE BETTER STRUCTURE HERE
-    // TODO: HOW TO OPTIMIZIE THIS CODE
-    // TODO: FIX USE EFFECT RUNS INFINITELY BUG
 
     const search = useContext(SearchContext);
 
-
+    // extracting the hotelID from the URL since we need it to fetch the hotel details
     const {id} = useParams();
 
-    const [hotel, setHotel] = useState<hotelType| undefined>(undefined);
-
-    const [nights, setNights] = useState<number>(0);
-    const getHotel = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}`,
-                {withCredentials: true}
-            );
-
-            setHotel(response.data);
-
-        } catch (e) {
-            // @ts-ignore
-            const errorMessage =
-                e.response?.data?.errorMessage || e.message || "Something went wrong";
-            setError(errorMessage);
-            toast.error(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        getHotel();
-    }, [getHotel]);
-
-    useEffect(() => {
-         if (search.checkIn && search.checkOut) {
-             const diffTime = Math.abs(search.checkOut.getTime() - search.checkIn.getTime());
-             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-             setNights(diffDays);
-         }
-    }, [search.checkIn, search.checkOut]);
-
-    
-
-
-
-
-
-
-    const [currUser, setCurrUser] = useState<userType | undefined>(undefined);
+    const [hotel, setHotel] = useState<hotelType | null>(null);
+    const [nights, setNights] = useState(0);
+    const [currUser, setCurrUser] = useState<userType | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-
-
-    const getCurrUser = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-
-            const response = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`,
-                {withCredentials: true}
-            );
-
-            setCurrUser(response.data);
-
-        } catch (e) {
-            // @ts-ignore
-            const errorMessage =
-                e.response?.data?.errorMessage || e.message || "Something went wrong";
-            setError(errorMessage);
-            toast.error(errorMessage);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // fetching the hotel details to be displayed in the booking summary section
     useEffect(() => {
-        getCurrUser();
+        const fetchHotel = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${id}`,
+                    {withCredentials: true}
+                );
+                setHotel(response.data);
+            } catch (e) {
+                console.error(e);
+                setError("Something went wrong. Please try again later.");
+                toast.error("Something went wrong");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchHotel();
+    }, [id]);
+
+
+// fetching the current user details to be displayed in the booking form section
+    useEffect(() => {
+        const fetchCurrUser = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/me`,
+                    {withCredentials: true}
+                );
+                setCurrUser(response.data);
+            } catch (e) {
+                console.error(e);
+                setError("Something went wrong. Please try again later.");
+                toast.error("Something went wrong");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCurrUser();
     }, []);
 
+    // calculating the number of nights based on the check-in and check-out dates selected by the user
+    // useEffect is used here is to ensure that the number of nights is recalculated and the state is updated whenever the check-in or check-out date changes. Without useEffect, the number of nights would only be calculated once when the component is first rendered, and would not update if the dates change.
+    useEffect(() => {
+
+        // checking if both check-in and check-out dates are defined
+        if (search?.checkIn && search?.checkOut) {
+            const diffTime = Math.abs(search.checkOut.getTime() - search.checkIn.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            setNights(diffDays);
+        }
+    }, [search?.checkIn, search?.checkOut]);
 
     if (loading) return <MyLoader/>;
-
     if (error) return <h1>{error}</h1>;
 
-
     return (
-        // <div className="p-4">
-        //     <h1 className="text-2xl mb-4">Booking Confirmation</h1>
-        //     <p><strong>Destination:</strong> {destination}</p>
-        //     <p><strong>Hotel ID:</strong> {hotelId}</p>
-        //     <p><strong>Check-in Date:</strong> {checkIn.toDateString()}</p>
-        //     <p><strong>Check-out Date:</strong> {checkOut.toDateString()}</p>
-        //     <p><strong>Number of Adults:</strong> {numAdults}</p>
-        //     <p><strong>Number of Children:</strong> {numChildren}</p>
-        // </div>
-        <div className="grid md:grid-cols-[1fr_2fr]">
-            <div>
-                <BookingSummary hotel={hotel} nights={nights}/>
+        <div className="grid md:grid-cols-[2fr_5fr] gap-8 p-6">
+            <div className="p-4 bg-gray-800 rounded-lg shadow-md">
+                {hotel && (
+                    <BookingSummary
+                        hotel={hotel}
+                        checkIn={search?.checkIn as Date}
+                        checkOut={search?.checkOut as Date}
+                        numAdults={search?.numAdults as number}
+                        numChildren={search?.numChildren as number}
+                        nights={nights}
+                    />
+                )}
             </div>
-            <div>
+            <div className="p-4 bg-gray-800 rounded-lg shadow-md flex items-center justify-center">
                 {currUser && <BookingForm currUser={currUser}/>}
             </div>
         </div>
-
     );
 }
