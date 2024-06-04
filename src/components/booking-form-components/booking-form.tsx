@@ -46,7 +46,7 @@ export default function BookingForm({currUser, paymentIntent}: BookingFormProps)
         try {
             setIsSubmitting(true);
 
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${paymentIntent.hotelId}/bookings`, {);
+            // const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels/${paymentIntent.hotelId}/bookings`, {);
 
         } catch (e) {
             console.log(e);
