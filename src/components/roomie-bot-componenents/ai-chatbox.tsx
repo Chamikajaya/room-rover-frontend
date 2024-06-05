@@ -13,6 +13,7 @@ interface ChatbotModalProps {
 
 
 // TODO: MAKE THE ALERT MODAL POPUP BEFORE DELETING THE CHAT HISTORY
+// ! CHECK THE FUNCTIONALITY
 export default function ChatbotModal({ isOpen, onClose }: ChatbotModalProps) {
     const {
         messages,
