@@ -32,21 +32,11 @@ interface GuestInfoFormAtDetailsPageProps {
     id: string;
 }
 
-// TODO: FIX FOLLOWING ERRORS
-// ERROR MESSAGES (VALIDATION) for checkIn, checkOut, are not displayed, for numChildren and adults they are  displayed properly
-// Calender displays dates even before the checkIn date for checkout date pick
-// Check-in date must be before check-out date error is not displayed
-
-
-
-
 export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetailsPageProps) {
 
     const router = useRouter();
-
     const authContext = useContext(AuthContext);
     const isAuthenticated = authContext ? authContext.isAuthenticated : false;
-
     const searchContext = useContext(SearchContext);
 
     const form = useForm<z.infer<typeof GuestInfoValidation>>({
@@ -84,10 +74,8 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
 
     return (
         <div className="flex justify-center w-full mt-6">
-
             {/* FORM */}
             <Form {...form}>
-
                 <form
                     onSubmit={form.handleSubmit(handleBookNow)}
                     className="p-4 bg-gray-900 rounded-2xl shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-5"
@@ -96,7 +84,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                     <FormField
                         control={form.control}
                         name="checkIn"
-                        render={({field}) => (
+                        render={({ field }) => (
                             <FormItem className="flex flex-col">
                                 <FormLabel>Check-in</FormLabel>
                                 <Popover>
@@ -112,7 +100,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                                 {field.value
                                                     ? format(field.value, "PPP")
                                                     : "Check-in"}
-                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50"/>
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -128,7 +116,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage/>
+                                <FormMessage name="checkIn" />
                             </FormItem>
                         )}
                     />
@@ -137,7 +125,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                     <FormField
                         control={form.control}
                         name="checkOut"
-                        render={({field}) => (
+                        render={({ field }) => (
                             <FormItem className="flex flex-col">
                                 <FormLabel>Check-out</FormLabel>
                                 <Popover>
@@ -153,7 +141,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                                 {field.value
                                                     ? format(field.value, "PPP")
                                                     : "Check-out"}
-                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50"/>
+                                                <CalendarCheck className="ml-auto h-4 w-4 opacity-50" />
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
@@ -163,13 +151,13 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                             selected={field.value}
                                             onSelect={(date) => field.onChange(date)}
                                             disabled={(date) =>
-                                                date < minDate || date > maxDate
+                                                date < (form.getValues("checkIn") || minDate) || date > maxDate
                                             }
                                             initialFocus
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage/>
+                                <FormMessage name="checkOut" />
                             </FormItem>
                         )}
                     />
@@ -193,13 +181,12 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         }}
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage name="numAdults" />
                             </FormItem>
                         )}
                     />
 
                     {/* NUMBER OF CHILDREN */}
-
                     <FormField
                         control={form.control}
                         name="numChildren"
@@ -218,7 +205,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         }}
                                     />
                                 </FormControl>
-                                <FormMessage />
+                                <FormMessage name="numChildren" />
                             </FormItem>
                         )}
                     />
@@ -226,7 +213,8 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                     {/* SUBMIT BUTTON */}
                     <div className="flex justify-center w-full mt-6">
                         <Button
-                            className="w-64 py-3 text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                            className="w-64 py-3 text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
+                        >
                             {isAuthenticated ? "Book Now" : "Login to Book"}
                         </Button>
                     </div>
