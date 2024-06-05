@@ -88,6 +88,7 @@ export default function SignInForm() {
 
             setFormErrMsg("")
             setFormSuccessMsg("")
+            setIsSubmitting(true)
 
             const email = form.getValues("email")
 
@@ -112,6 +113,8 @@ export default function SignInForm() {
             console.error(e)
             setFormErrMsg("We could not send the password reset link. Please try again later.")
 
+        } finally {
+            setIsSubmitting(false)
         }
 
     };
@@ -181,6 +184,7 @@ export default function SignInForm() {
                 variant={"link"}
                 className={"font-medium w-full pt-4 text-white"}
                 onClick={onPasswordForget}
+                disabled={isSubmitting}
             >
                 Forgot Password ?
             </Button>

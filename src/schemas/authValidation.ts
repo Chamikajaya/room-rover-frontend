@@ -49,3 +49,26 @@ export const signInSchema = z
 
 
 export type SignInSchema = z.infer<typeof signInSchema>;
+
+
+export const newPasswordSchema = z.object({
+    password: z
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .regex(passwordRegex, {
+            message:
+                "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",
+        }),
+    confirmPassword: z.string(),
+})
+    .refine(
+        (values) => {
+            return values.password === values.confirmPassword;
+        },
+        {
+            message: "Passwords must match!",
+            path: ["confirmPassword"],
+        }
+    );
+
+export type NewPasswordSchema = z.infer<typeof newPasswordSchema>;
