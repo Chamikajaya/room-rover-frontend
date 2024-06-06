@@ -18,10 +18,9 @@ export default function HotelCard({hotel}: HotelCardProps) {
                 <Image
                     src={hotel.imageURLs[0]}
                     alt={hotel.name}
-                    layout="fill"
-                    objectFit="cover"
-                    objectPosition="center"
-                    className="transition-transform transform hover:scale-105"
+                    width={800}
+                    height={800}
+                    className="transition-transform transform hover:scale-105 object-fill object-cover"
                 />
             </div>
 

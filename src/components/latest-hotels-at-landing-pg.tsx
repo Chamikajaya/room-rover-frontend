@@ -1,6 +1,7 @@
 import {hotelType} from "@/types/hotelType";
 import HotelCard from "@/components/HotelCard";
 
+
 interface LatestHotelsProps {
     hotels: hotelType[];
 
@@ -8,7 +9,6 @@ interface LatestHotelsProps {
 
 export default function LatestHotels({hotels}: LatestHotelsProps) {
 
-    console.log(hotels);
     return (
         <div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 mx-auto text-center">Latest Hotels from Room Rover</h2>

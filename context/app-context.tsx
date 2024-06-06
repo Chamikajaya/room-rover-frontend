@@ -22,7 +22,7 @@ type AppContext = {
 const AppContext = createContext<AppContext | undefined>(undefined);
 
 const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string;
-console.log("Stripe API Key:", stripePublicKey);
+// console.log("Stripe API Key:", stripePublicKey);
 
 if (!stripePublicKey) {
     throw new Error("Missing Stripe API key");
@@ -54,7 +54,7 @@ export function AppProvider({children}: appProviderProps) {
                 toast.error("Authentication failed");
             }
         } catch (e) {
-            console.error("AUTH PROVIDER --> " + e);
+            // console.error("AUTH PROVIDER --> " + e);
             setIsAuthenticated(false);
             setUser(null);
         }

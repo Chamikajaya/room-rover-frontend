@@ -78,7 +78,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(handleBookNow)}
-                    className="p-4 bg-gray-900 rounded-2xl shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-5"
+                    className="p-4 bg-gray-900 rounded-2xl shadow-lg grid grid-cols-1 lg:grid-cols-2 gap-5 w-full max-w-screen-md"
                 >
                     {/* CHECK IN DATE */}
                     <FormField
@@ -211,13 +211,14 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                     />
 
                     {/* SUBMIT BUTTON */}
-                    <div className="flex justify-center w-full mt-6">
+                    <div className="flex justify-center sm:col-span-2 mt-6">
                         <Button
                             className="w-64 py-3 text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 rounded-full shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
                         >
                             {isAuthenticated ? "Book Now" : "Login to Book"}
                         </Button>
                     </div>
+
                 </form>
             </Form>
         </div>
