@@ -2,8 +2,6 @@
 
 import {
     ColumnDef,
-    SortingState,
-    getSortedRowModel,
 
 
     ColumnFiltersState,
@@ -27,7 +25,6 @@ import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import React from "react"
 import {Search} from "lucide-react";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 
 
 interface DataTableProps<TData, TValue> {
@@ -42,12 +39,7 @@ export function DataTable<TData, TValue>({
                                              searchKey,
                                          }: DataTableProps<TData, TValue>) {
 
-    const [sorting, setSorting] = React.useState<SortingState>([
-        {
-            id: 'updatedAt',
-            desc: true,
-        },
-    ])
+
 
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -60,16 +52,14 @@ export function DataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
+
         state: {
             columnFilters,
-            sorting,
         },
     })
 
     return (
-        <div>
+        <div >
             <div className="flex items-center justify-center py-4">
                 <div className="relative max-w-sm">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -85,7 +75,7 @@ export function DataTable<TData, TValue>({
                     />
                 </div>
             </div>
-            <div className="rounded-md border">
+            <div className="rounded-md  shadow-primary shadow-md">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

@@ -16,7 +16,7 @@ export default function NavbarButtons() {
       <ChatbotModalButton />
       {isAuthenticated ? (
         <>
-          <Link href={"/"}>
+          <Link href={"/my-bookings"}>
             <Button
               className={"font-semibold hover:text-primary hover:bg-secondary"}
               variant={"secondary"}
