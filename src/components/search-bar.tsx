@@ -122,7 +122,7 @@ export default function SearchBar() {
                                     <PopoverContent className="w-auto p-0" align="end">
                                         <Calendar
                                             mode="single"
-                                            selected={checkIn}
+                                            selected={checkIn || undefined}
                                             onSelect={(date) => {
                                                 field.onChange(date);
                                                 setCheckIn(date as Date);
@@ -164,7 +164,7 @@ export default function SearchBar() {
                                     <PopoverContent className="w-auto p-0" align="end">
                                         <Calendar
                                             mode="single"
-                                            selected={checkOut}
+                                            selected={checkOut || undefined}
                                             onSelect={(date) => {
                                                 field.onChange(date);
                                                 setCheckOut(date as Date);
