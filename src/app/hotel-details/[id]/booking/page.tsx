@@ -17,9 +17,14 @@ import appContext from "../../../../../context/app-context";
 export default function BookingConfirmation() {
 
     const search = useContext(SearchContext);
-    const {id} = useParams();
+    const { id } = useParams();
 
-    const {stripePromise} = useContext(appContext)
+    const appCtx = useContext(appContext);
+    if (!appCtx) {
+        throw new Error("AppContext is not provided");
+    }
+
+    const { stripePromise } = appCtx;
 
 
     const [hotel, setHotel] = useState<hotelType | null>(null);  // need to store hotel in a state because we need to pass the hotel to BookingSummary component
