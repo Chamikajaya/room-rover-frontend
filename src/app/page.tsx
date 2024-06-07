@@ -30,6 +30,7 @@ export default function RootPage() {
             } catch (e) {
                 setError("Error fetching latest hotels. Please try again later.");
                 toast.error("Error fetching latest hotels. Please try again later.");
+                console.error("An error while fetching hotels", e);
                 setLoading(false);
             } finally {
                 setLoading(false);
