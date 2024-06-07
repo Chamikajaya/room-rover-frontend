@@ -1,6 +1,6 @@
 "use client";
 
-import React, {createContext} from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 interface SearchProviderProps {
     children: React.ReactNode;
@@ -18,20 +18,38 @@ type SearchContext = {
 
 const SearchContext = createContext<SearchContext | undefined>(undefined);
 
-export function SearchProvider({children}: SearchProviderProps) {
+export function SearchProvider({ children }: SearchProviderProps) {
+    const [checkIn, setCheckIn] = useState<Date>(new Date());
+    const [checkOut, setCheckOut] = useState<Date>(new Date());
+    const [numAdults, setNumAdults] = useState<number>(1);
+    const [numChildren, setNumChildren] = useState<number>(0);
+    const [destination, setDestination] = useState<string>("");
+    const [hotelId, setHotelId] = useState<string>("");
 
-    const [checkIn, setCheckIn] = React.useState<Date>(() => new Date(sessionStorage.getItem("checkIn") || new Date().toISOString()));
+    useEffect(() => {
+        const savedCheckIn = sessionStorage.getItem("checkIn");
+        const savedCheckOut = sessionStorage.getItem("checkOut");
+        const savedNumAdults = sessionStorage.getItem("numAdults");
+        const savedNumChildren = sessionStorage.getItem("numChildren");
+        const savedDestination = sessionStorage.getItem("destination");
+        const savedHotelId = sessionStorage.getItem("hotelId");
 
-    const [checkOut, setCheckOut] = React.useState<Date>(() => new Date(sessionStorage.getItem("checkOut") || new Date().toISOString()));
+        if (savedCheckIn) setCheckIn(new Date(savedCheckIn));
+        if (savedCheckOut) setCheckOut(new Date(savedCheckOut));
+        if (savedNumAdults) setNumAdults(parseInt(savedNumAdults));
+        if (savedNumChildren) setNumChildren(parseInt(savedNumChildren));
+        if (savedDestination) setDestination(savedDestination);
+        if (savedHotelId) setHotelId(savedHotelId);
+    }, []);
 
-    const [numAdults, setNumAdults] = React.useState<number>(() => parseInt(sessionStorage.getItem("numAdults") || "1"));
-    const [numChildren, setNumChildren] = React.useState<number>(() => parseInt(sessionStorage.getItem("numChildren") || "0"));
-
-    const [destination, setDestination] = React.useState<string>(() => sessionStorage.getItem("destination") || "");
-
-    const [hotelId, setHotelId] = React.useState<string>(() => sessionStorage.getItem("hotelId") || "");
-
-    const saveSearch = (checkIn: Date, checkOut: Date, numAdults: number, numChildren: number, destination: string, hotelId: string = "") => {
+    const saveSearch = (
+        checkIn: Date,
+        checkOut: Date,
+        numAdults: number,
+        numChildren: number,
+        destination: string,
+        hotelId: string = ""
+    ) => {
         setCheckIn(checkIn);
         setCheckOut(checkOut);
         setNumAdults(numAdults);
@@ -47,12 +65,20 @@ export function SearchProvider({children}: SearchProviderProps) {
         sessionStorage.setItem("destination", destination);
 
         if (hotelId) sessionStorage.setItem("hotelId", hotelId);
-
-
     };
 
     return (
-        <SearchContext.Provider value={{checkIn, checkOut, numAdults, numChildren, destination, hotelId, saveSearch}}>
+        <SearchContext.Provider
+            value={{
+                checkIn,
+                checkOut,
+                numAdults,
+                numChildren,
+                destination,
+                hotelId,
+                saveSearch,
+            }}
+        >
             {children}
         </SearchContext.Provider>
     );
