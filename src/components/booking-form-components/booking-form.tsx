@@ -38,7 +38,7 @@ const CARD_ELEMENT_OPTIONS = {
                 color: "#aab7c4", // text-gray-400
             },
             backgroundColor: "#1f2937", // bg-gray-800
-            padding: "0.5rem", // p-2
+            
         },
         invalid: {
             color: "#fa755a", // text-red-500
@@ -101,7 +101,6 @@ export default function BookingForm({ currUser, paymentIntent }: BookingFormProp
         try {
             setIsSubmitting(true);
 
-            // Create a Payment Method
             const cardElement = elements?.getElement(CardElement) as StripeCardElement;
             const { paymentMethod, error } = await stripe?.createPaymentMethod({
                 type: "card",
@@ -114,7 +113,6 @@ export default function BookingForm({ currUser, paymentIntent }: BookingFormProp
                 return;
             }
 
-            // Confirm the Payment
             const result = await stripe?.confirmCardPayment(paymentIntent.clientSecret, {
                 payment_method: paymentMethod?.id,
             });
@@ -190,10 +188,8 @@ export default function BookingForm({ currUser, paymentIntent }: BookingFormProp
                             )}
                         />
 
-                        {/* COST */}
                         <div className="space-y-2">
                             <h2 className="text-xl font-semibold">Net Amount</h2>
-
                             <div className="bg-gray-800 p-4 rounded-md">
                                 <div className="font-semibold text-lg text-pretty">
                                     Total Cost: ${paymentIntent.totalAmount.toFixed(2)}
@@ -202,7 +198,6 @@ export default function BookingForm({ currUser, paymentIntent }: BookingFormProp
                             </div>
                         </div>
 
-                        {/* CARD ELEMENT */}
                         <div className="space-y-2">
                             <h3 className="text-xl font-semibold">Card Details</h3>
                             <CardElement id="payment-element" options={CARD_ELEMENT_OPTIONS} className="shadow-lg shadow-gray-800" />
@@ -210,7 +205,7 @@ export default function BookingForm({ currUser, paymentIntent }: BookingFormProp
                     </div>
 
                     <div className="flex justify-center items-center">
-                        <Button type="submit" className="w-[50%] mx-auto" size={"sm"} disabled={isSubmitting || isPaymentSuccessful}>
+                        <Button type="submit" className="w-full md:w-1/2" size={"sm"} disabled={isSubmitting || isPaymentSuccessful}>
                             Confirm Booking
                         </Button>
                     </div>

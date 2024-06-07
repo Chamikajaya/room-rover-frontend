@@ -27,19 +27,26 @@ export default function HotelCard({hotel}: HotelCardProps) {
             {/* INFO COL */}
             <div className="flex flex-col justify-between">
                 <div>
-                    <div className="flex items-center mb-2">
+                    {/* Star Rating */}
+                    <div className="flex items-center mb-2 sm:mb-0">
                         <span className="flex">
                             {Array.from({length: hotel.starRating}).map((_, idx) => (
                                 <Star className="fill-yellow-500 text-yellow-500" size={20} key={idx}/>
                             ))}
                         </span>
-                        <span
-                            className="ml-2 text-lg text-gray-700 dark:text-gray-300">{hotel.city} - {hotel.country}</span>
                     </div>
+
+                    {/* City and Country */}
+
                     <Link href={`/hotel-details/${hotel.id}`}
                           className="text-2xl font-bold text-gray-900 dark:text-white hover:underline">
                         {hotel.name}
                     </Link>
+                    <div className="sm:ml-2 sm:inline-block text-lg text-gray-700 dark:text-gray-300">
+                        {hotel.city} - {hotel.country}
+                    </div>
+
+
                 </div>
 
                 <div className="my-4">

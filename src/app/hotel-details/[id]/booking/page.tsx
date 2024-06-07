@@ -109,8 +109,9 @@ export default function BookingConfirmation() {
     if (loading) return <MyLoader />;
     if (error) return <h1>{error}</h1>;
 
+
     return (
-        <div className="grid md:grid-cols-[2fr_5fr] gap-8 p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
             <div className="p-4 bg-gray-800 rounded-lg shadow-md">
                 {hotel && (
                     <BookingSummary
@@ -126,7 +127,7 @@ export default function BookingConfirmation() {
             <div className="p-4 bg-gray-800 rounded-lg shadow-md flex items-center justify-center">
                 {currUser && paymentIntent && (
                     <Elements stripe={stripePromise} options={{clientSecret:paymentIntent.clientSecret}} >
-                        <BookingForm currUser={currUser}  paymentIntent={paymentIntent}/>
+                        <BookingForm currUser={currUser} paymentIntent={paymentIntent} />
                     </Elements>
                 )}
             </div>

@@ -18,7 +18,7 @@ export default function BookingSummary({
                                            hotel
                                        }: BookingSummaryProps) {
     return (
-        <div className="p-6 bg-black rounded-lg shadow-md ">
+        <div className="p-6 bg-black rounded-lg shadow-md">
             <h1 className="text-2xl font-semibold mb-6 text-white text-center tracking-tighter">Booking Summary 📃</h1>
             <div className="space-y-4">
                 <div className={"flex flex-col gap-1"}>
