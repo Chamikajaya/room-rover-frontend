@@ -50,7 +50,7 @@ export default function HotelCard({hotel}: HotelCardProps) {
                     <span
                         className="text-xl font-bold text-gray-900 dark:text-white">{hotel.pricePerNight} $ per night</span>
 
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-2 items-center hidden md:block">
                         {hotel.facilities.slice(0, 2).map((facility, idx) => (
                             <span className="bg-purple-500 text-white px-3 py-1 rounded-lg text-xs font-semibold"
                                   key={idx}>
