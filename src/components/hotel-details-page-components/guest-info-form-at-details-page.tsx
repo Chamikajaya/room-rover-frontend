@@ -116,7 +116,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage name="checkIn" />
+                                <FormMessage  />
                             </FormItem>
                         )}
                     />
@@ -157,7 +157,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormMessage name="checkOut" />
+                                <FormMessage  />
                             </FormItem>
                         )}
                     />
@@ -181,7 +181,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         }}
                                     />
                                 </FormControl>
-                                <FormMessage name="numAdults" />
+                                <FormMessage  />
                             </FormItem>
                         )}
                     />
@@ -205,7 +205,7 @@ export default function GuestInfoFormAtDetailsPage({ id }: GuestInfoFormAtDetail
                                         }}
                                     />
                                 </FormControl>
-                                <FormMessage name="numChildren" />
+                                <FormMessage  />
                             </FormItem>
                         )}
                     />
