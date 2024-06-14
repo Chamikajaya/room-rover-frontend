@@ -1,4 +1,4 @@
-# Project Room Rover - Backend 🚀
+# Project Room Rover - Frontend 🚀
 
 ## Live Demo
 
