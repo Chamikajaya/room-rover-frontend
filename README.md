@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Room Rover - Backend 🚀
 
-## Getting Started
+## Live Demo
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://github.com/Chamikajaya/room-rover-frontend/assets/109778419/e467a22b-3c2c-4319-b142-70ae03d89e13
+
+
+
+
+
+**This repository holds the backend source code of my project Room Rover**
+
+- Frontend Source Code: [https://github.com/Chamikajaya/room-rover-frontend](https://github.com/Chamikajaya/room-rover-frontend)
+- Backend Source Code: [https://github.com/Chamikajaya/room-rover-backend](https://github.com/Chamikajaya/room-rover-backend)
+
+## Technologies Used - Frontend 🛠️
+
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **ORM:** Prisma
+- **Frontend:** Next.js (React Framework), Tailwind CSS, ShadCN UI Library
+- **Authentication:** JSON Web Tokens (JWT)
+
+- ## Environment Variables - Frontend 🔧
+
+- Here are the environment variables you need to configure before running the frontend:
+
+```
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=_________
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Clone the repository**
+  ```
+   git clone https://github.com/Chamikajaya/room-rover-frontend.git
+  ```
+- **Add the .env file in the root directory with the necessary environment variables.**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Install dependencies and run the development server:**
+  ```
+  npm install
+  npm run dev
+  ```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
