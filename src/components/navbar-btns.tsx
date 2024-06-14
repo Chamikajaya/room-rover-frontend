@@ -5,7 +5,6 @@ import AppContext from "../../context/app-context";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/auth-components/logout-btn";
-import ChatbotModalButton from "@/components/roomie-bot-componenents/ai-chat-btn";
 
 export default function NavbarButtons() {
   // @ts-ignore
@@ -13,7 +12,6 @@ export default function NavbarButtons() {
 
   return (
     <>
-      <ChatbotModalButton />
       {isAuthenticated ? (
         <>
           <Link href={"/my-bookings"}>
