@@ -21,6 +21,7 @@ export default function RootPage() {
 
     useEffect(() => {
         const getNewestHotels = async () => {
+            console.log("API URL is set to --> " + process.env.NEXT_PUBLIC_API_BASE_URL)
             try {
                 setLoading(true)
                 const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/hotels?page=${page}`)
@@ -55,7 +56,8 @@ export default function RootPage() {
             {results?.hotelsFound && (
                 <>
                     <LatestHotels hotels={results.hotelsFound}/>
-                    <PaginationForSearch totalPages={results.paginationInfo.totalPages} currentPage={page} onPageChange={handlePageChange}/>
+                    <PaginationForSearch totalPages={results.paginationInfo.totalPages} currentPage={page}
+                                         onPageChange={handlePageChange}/>
 
 
                 </>
