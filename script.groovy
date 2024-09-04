@@ -27,10 +27,18 @@ def versionIncrement() {
 def deploy() {
     echo "Deploying the app to EC2 instance"
 
-    def dockerCommand = "docker run -d -p 3000:3000 chamikajay/room-rover-frontend:${env.IMAGE_TAG}"
+    def dockerCommand = """
+        docker run -d \
+        -p 3000:3000 \
+        -e PORT=3000 \
+        -e HOSTNAME="0.0.0.0" \
+        -e NEXT_PUBLIC_API_BASE_URL="http://13.200.12.74:5000" \
+        -e NEXT_PUBLIC_STRIPE_PUBLIC_KEY="pk_test_51PNooyAlVX7wDzWhXJx2NQcNyms07M5HIe2AzhB8ytmaEzGadkLa7FWV9vQSWGfwJFHf0dOuSAud2PQcRi8MbXNy00Tv4DYFif" \
+        chamikajay/room-rover-frontend:${env.IMAGE_TAG}
+    """
 
     sshagent(['aws-ec2-ssh']) {
-        sh "ssh -o StrictHostKeyChecking=no ec2-user@13.200.12.74 ${dockerCommand}"
+        sh "ssh -o StrictHostKeyChecking=no ec2-user@13.200.12.74 '${dockerCommand}'"
     }
 }
 
