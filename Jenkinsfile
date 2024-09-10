@@ -57,6 +57,8 @@ pipeline {
                     def imageNameToPass = "chamikajay/room-rover-frontend:${env.IMAGE_TAG}"
                     echo "Image name is: ${imageNameToPass}"
 
+
+                    // * Using Jenkins Shared Lib I built
                     buildImage imageNameToPass
                     dockerHubLogin()
                     dockerHubPush imageNameToPass
