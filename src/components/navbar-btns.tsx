@@ -5,6 +5,7 @@ import AppContext from "../../context/app-context";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/auth-components/logout-btn";
+import ChatbotModalButton from "./ui/ChatbotModalButton";
 
 export default function NavbarButtons() {
   // @ts-ignore
@@ -14,6 +15,8 @@ export default function NavbarButtons() {
     <>
       {isAuthenticated ? (
         <>
+          <ChatbotModalButton />
+
           <Link href={"/my-bookings"}>
             <Button
               className={"font-semibold hover:text-primary hover:bg-secondary"}
@@ -22,6 +25,7 @@ export default function NavbarButtons() {
               Bookings
             </Button>
           </Link>
+          {/* <ChatbotModalButton /> */}
           <Link href={"/my-hotels"}>
             <Button
               className={"font-semibold hover:text-primary hover:bg-secondary"}
@@ -52,7 +56,6 @@ export default function NavbarButtons() {
           </Link>
         </>
       )}
-
     </>
   );
 }
